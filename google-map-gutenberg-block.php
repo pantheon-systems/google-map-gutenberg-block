@@ -251,11 +251,12 @@ class SettingsPage
     public function apiInputCallback()
     {
         printf(
-            '<input type="text" id="api_key" name="pantheon_google_map_block_options[api_key]" value="%s" />
-            <p class="description">The Google Map will not work without an API key. You can obtain one <a href="https://developers.google.com/maps/documentation/embed/get-api-key">here</a>. 
-            The API key will be exposed publicly to generate the map. It is important to <a href="https://developers.google.com/maps/documentation/embed/get-api-key#key-restrictions">secure your API key</a> so others do not abuse it.
+            '<input type="text" id="api_key" name="pantheon_google_map_block_options[api_key]" style="%s" value="%s" />
+            <p class="description">The Google Map will not work without an API key. You can obtain one <a href="https://developers.google.com/maps/documentation/embed/get-api-key">here</a>. <br />
+            The API key will be exposed publicly to generate the map. It is important to <a href="https://developers.google.com/maps/documentation/embed/get-api-key#key-restrictions">restrict your API key</a> so others do not abuse it.
             </p>
             ',
+            'width:100%;max-width:500px;',
             isset($this->_options['api_key']) ? esc_attr($this->_options['api_key']) : ''
         );
     }

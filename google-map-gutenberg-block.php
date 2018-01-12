@@ -43,15 +43,6 @@ function editorScripts()
         );
     }
 
-    // Pass in REST URL
-    wp_localize_script(
-        'pantheon-google-map-block-js',
-        'pantheonGoogleMapBlockREST',
-        [
-            'rest_url' => esc_url(rest_url()),
-        ]
-    );
-
 
     // Enqueue optional editor only styles
     if (file_exists(plugin_dir_path(__FILE__) . $editorStylePath)) {
@@ -88,22 +79,11 @@ function blockScripts()
             [ 'wp-i18n', 'wp-element', 'wp-blocks', 'wp-components', 'wp-api' ],
             filemtime(plugin_dir_path(__FILE__) . $blockPath)
         );
+    }
 
-        $global_block_settings = get_option('pantheon_google_map_block_options');
-        if (!isset($global_block_settings['api_key'])) {
-            $global_block_settings['api_key'] = '';
-        }
-
-        // Pass in plugin settings
-        wp_localize_script(
-            'pantheon-google-map-block-frontend-js',
-            'pantheonGoogleMapBlockGlobals',
-            [
-                'rest_url' => esc_url(rest_url()),
-                'settings' => $global_block_settings,
-                'settings_url' => admin_url('options-general.php?page=pantheon-google-map-block')
-            ]
-        );
+    $global_block_settings = get_option('pantheon_google_map_block_options');
+    if (!isset($global_block_settings['api_key'])) {
+        $global_block_settings['api_key'] = '';
     }
 
     // Enqueue frontend and editor block styles
@@ -265,4 +245,47 @@ class SettingsPage
 
 if (is_admin()) {
     $pantheon_google_map_block_settings_page = new SettingsPage();
+}
+
+add_action( 'rest_api_init', __NAMESPACE__ . '\\registerAPIhooks' );
+
+/**
+ * Register WordPress REST API endpoint for Google Map Block
+ *
+ * @return void
+ */
+function registerAPIhooks() {
+
+    register_rest_route( 'pantheon-google-map-block/v1', 'options', array(
+        array(
+            'methods' => 'GET',
+            'callback' => __NAMESPACE__ . '\\returnGoogleMapBlockOptions',
+        ),
+    ) );
+
+}
+
+/**
+ * Return plugin options for Google Map Block
+ *
+ * @return array
+ */
+function returnGoogleMapBlockOptions() {
+
+    $global_block_settings = get_option('pantheon_google_map_block_options');
+
+    if( null === $global_block_settings ){
+        $global_block_settings = array();
+    }
+
+    if (!isset($global_block_settings['api_key'])) {
+        $global_block_settings['api_key'] = '';
+    }
+
+     return array(
+        'rest_url' => esc_url(rest_url()),
+        'settings' => $global_block_settings,
+        'settings_url' => admin_url('options-general.php?page=pantheon-google-map-block'),
+    );
+
 }

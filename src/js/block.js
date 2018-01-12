@@ -9,6 +9,7 @@ import blockIcons from './icons.js'
  */
 const { __ } = wp.i18n;
 const { registerBlockType, InspectorControls, BlockDescription } = wp.blocks;
+const { withAPIData } = wp.components;
 const { TextControl, ToggleControl, TextareaControl, RangeControl, SelectControl } = InspectorControls;
 
 /**
@@ -100,7 +101,7 @@ registerBlockType( 'pantheon/google-map', {
 		},
 		APIkey: {
 			type: 'string',
-			default: pantheonGoogleMapBlockGlobals.settings.api_key,
+			default: '',
 		},
 	},
 
@@ -108,20 +109,44 @@ registerBlockType( 'pantheon/google-map', {
 		html: true,
 	},
 
-	edit( { attributes, setAttributes, focus, className } ) {
-        const { location, mapType, zoom, width, height, interactive, APIkey } = attributes;
+	edit: withAPIData( () => {
+		return {
+			APIData: '/pantheon-google-map-block/v1/options'
+		};
+	} )( ( { APIData, attributes, setAttributes, focus, className } )  => {
+
+        const { location, mapType, zoom, width, height, interactive } = attributes;
+        
+        if( APIData.isLoading || APIData.data === undefined ){
+            return (
+                <div className={`${className} notice notice-warning`} style={{padding: '1em'}}>
+                    <p style={{textAlign: 'center'}}>
+                        {__( 'Loading map...') }
+                    </p>
+                </div>
+            )
+        }
+        
+        const pantheonGoogleMapBlockOptions = APIData.data;
+        
+        if( attributes.APIkey === '' ){
+            setAttributes( { APIkey: pantheonGoogleMapBlockOptions.settings.api_key } ) 
+        }
+        
+        const {APIkey} = attributes;
+        
         let blockContent = (
             <div className={className} style={{padding: '1em'}}>
                 {getMapHTML( attributes )}
             </div>
         )
-        console.log(blockGlobals)
+
         if( APIkey === '' ){
             blockContent = (
                 <div className={`${className} error`} style={{padding: '1em'}}>
                     <p style={{textAlign: 'center'}}>
                         {__( 'A Google Maps API key is required.')  }&nbsp;
-                        <a href={blockGlobals.settings_url}>
+                        <a href={pantheonGoogleMapBlockOptions.settings_url}>
                         {__( 'View plugin settings to add an API key.')  }
                         </a>
                     </p>
@@ -151,12 +176,14 @@ registerBlockType( 'pantheon/google-map', {
                         value={height}
                         type='number'
                     />
+                    {/*
                     <TextControl 
                         label={ __( 'API Key' ) } 
                         onChange={ ( value ) => setAttributes( { APIkey: value } ) }
                         value={APIkey}
-                        autoFocus={ APIkey === '' }
+                        readOnly={true}
                     />
+                    */}
 					<SelectControl
                         label={ __( 'Map Type' ) } 
                         select={mapType} 
@@ -177,7 +204,7 @@ registerBlockType( 'pantheon/google-map', {
                 </div>
             ),
 		];
-	},
+	} ),
 
 	save( { attributes } ) {
         return getMapHTML( attributes );

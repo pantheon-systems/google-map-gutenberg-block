@@ -3,61 +3,15 @@
  */
 import '../css/style.scss'
 import blockIcons from './icons.js'
+import formFields from './formFields.js'
+import getMapHTML from './getMapHTML.js'
 
 /**
  * Get WordPress libraries from the wp global
  */
 const { __ } = wp.i18n;
-const { registerBlockType, InspectorControls, BlockDescription } = wp.blocks;
+const { registerBlockType } = wp.blocks;
 const { withAPIData } = wp.components;
-const { TextControl, ToggleControl, TextareaControl, RangeControl, SelectControl } = InspectorControls;
-
-/**
- * Declare variables
- */
-const blockGlobals = window.pantheonGoogleMapBlockGlobals
-
-const linkOptions = [
-    {value: 'roadmap', label: __( 'roadmap' ) },
-    {value: 'satellite', label: __( 'satellite' ) },
-];
-
-const getMapHTML = function( attributes, isEditor=false ){
-    const { location, mapType, zoom, width, height, interactive, APIkey } = attributes;
-
-    if( APIkey === '' ){
-        return null
-    }
-
-    if( !! interactive ){
-
-        return (
-            <iframe
-            width={width}
-            height={height}
-            frameborder="0"
-            style={{border:0}}
-            src={`https://www.google.com/maps/embed/v1/place?key=${APIkey}&q=${encodeURI(location)}&zoom=${zoom}&maptype=${mapType}`} 
-            allowFullScreen={true}>
-            </iframe>
-            /*
-            // Example using wp.element.createElement instead of JSX
-            wp.element.createElement('iframe', {
-                src: `https://www.google.com/maps/embed/v1/place?key=${APIkey}&q=${encodeURI(location)}&zoom=${zoom}&maptype=${mapType}`,
-                width: width,
-                height: height,
-                allowFullScreen: true,
-                frameBorder: "0",
-                style: {border:0},
-            })
-            */
-        )
-    } else {
-        return (
-            <img src={`https://maps.googleapis.com/maps/api/staticmap?center=${encodeURI(location)}&zoom=${zoom}&size=${width}x${height}&maptype=${mapType}&key=${APIkey}`} />
-        );
-    }
-}
 
 /**
  * Register Block.
@@ -69,6 +23,8 @@ const getMapHTML = function( attributes, isEditor=false ){
  */
 registerBlockType( 'pantheon/google-map', {
 	title: __( 'Google Map' ),
+    
+    description: __( 'Google Map' ),
 	
 	icon: blockIcons.googleMap,
 	
@@ -77,22 +33,22 @@ registerBlockType( 'pantheon/google-map', {
 	attributes: {
 		location: {
             type: 'string',
-            default: 'Pantheon, San Francisco, CA',
+            default: __( 'Pantheon, San Francisco, CA' ),
 		},
 		mapType: {
             type: 'string',
             default: 'roadmap',
 		},
 		zoom: {
-			type: 'int',
+			type: 'integer',
 			default: 13,
 		},
 		width: {
-			type: 'int',
+			type: 'integer',
 			default: 650,
 		},
 		height: {
-			type: 'int',
+			type: 'integer',
 			default: 450,
 		},
 		interactive: {
@@ -114,8 +70,6 @@ registerBlockType( 'pantheon/google-map', {
 			APIData: '/pantheon-google-map-block/v1/options'
 		};
 	} )( ( { APIData, attributes, setAttributes, focus, className } )  => {
-
-        const { location, mapType, zoom, width, height, interactive } = attributes;
         
         if( APIData.isLoading || APIData.data === undefined ){
             return (
@@ -155,48 +109,7 @@ registerBlockType( 'pantheon/google-map', {
         }
 		return [
 			focus && (
-				<InspectorControls key="inspector">
-					<BlockDescription>
-						<p>{ __( 'This block creates either an interactive Google map or an image. Simply enter text for a location.' ) }</p>
-					</BlockDescription>
-					<TextareaControl 
-                        label={ __( 'Location' ) } 
-                        onChange={ ( value ) => setAttributes( { location: value } ) } 
-                        value={location}
-                    />
-					<TextControl 
-                        label={ __( 'Width (in pixels)' ) } 
-                        onChange={ ( value ) => setAttributes( { width: Number.parseInt( value, 10 ) } ) }
-                        value={width}
-                        type='number'
-                    />
-					<TextControl 
-                        label={ __( 'Height (in pixels)' ) } 
-                        onChange={ ( value ) => setAttributes( { height: Number.parseInt( value, 10 ) } ) }
-                        value={height}
-                        type='number'
-                    />
-                    {/*
-                    <TextControl 
-                        label={ __( 'API Key' ) } 
-                        onChange={ ( value ) => setAttributes( { APIkey: value } ) }
-                        value={APIkey}
-                        readOnly={true}
-                    />
-                    */}
-					<SelectControl
-                        label={ __( 'Map Type' ) } 
-                        select={mapType} 
-                        options={linkOptions} 
-                        onChange={ ( value ) => setAttributes( { mapType: value } ) } 
-                        value={ mapType }
-                    />
-                    <ToggleControl
-						label={ __( 'Toggle interactive map (on) or static image (off)' ) }
-						checked={ !! interactive }
-						onChange={ () => setAttributes( { interactive: ! interactive } ) }
-					/>
-				</InspectorControls>
+                formFields( attributes, setAttributes)
             ),
 			(
                 <div className={className} style={{padding: '1em'}}>

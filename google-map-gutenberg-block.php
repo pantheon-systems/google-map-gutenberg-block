@@ -81,11 +81,6 @@ function blockScripts()
         );
     }
 
-    $global_block_settings = get_option('pantheon_google_map_block_options');
-    if (!isset($global_block_settings['api_key'])) {
-        $global_block_settings['api_key'] = '';
-    }
-
     // Enqueue frontend and editor block styles
     if (file_exists(plugin_dir_path(__FILE__) . $stylePath)) {
         wp_enqueue_style(

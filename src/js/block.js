@@ -5,12 +5,13 @@ import '../css/style.scss'
 import blockIcons from './icons.js'
 import formFields from './formFields.js'
 import getMapHTML from './getMapHTML.js'
+import getLocationString from './getLocationString.js'
 
 /**
  * Get WordPress libraries from the wp global
  */
 const { __ } = wp.i18n;
-const { registerBlockType } = wp.blocks;
+const { registerBlockType, Editable } = wp.blocks;
 const { withAPIData } = wp.components;
 
 /**
@@ -33,27 +34,30 @@ registerBlockType( 'pantheon/google-map', {
 	attributes: {
 		location: {
             type: 'string',
-            default: __( 'Pantheon, San Francisco, CA' ),
+			default: __( 'Pantheon, San Francisco, CA' ),
 		},
 		mapType: {
             type: 'string',
             default: 'roadmap',
 		},
 		zoom: {
-			type: 'integer',
+			type: 'number',
 			default: 13,
 		},
 		width: {
-			type: 'integer',
+			type: 'number',
 			default: 650,
 		},
 		height: {
-			type: 'integer',
+			type: 'number',
 			default: 450,
 		},
 		interactive: {
 			type: 'bool',
 			default: true,
+		},
+		align: {
+			type: 'string',
 		},
 		APIkey: {
 			type: 'string',
@@ -69,7 +73,7 @@ registerBlockType( 'pantheon/google-map', {
 		return {
 			APIData: '/pantheon-google-map-block/v1/options'
 		};
-	} )( ( { APIData, attributes, setAttributes, focus, className } )  => {
+	} )( ( { APIData, attributes, setAttributes, focus, className, setFocus } )  => {
         
         if( APIData.isLoading || APIData.data === undefined ){
             return (
@@ -87,7 +91,7 @@ registerBlockType( 'pantheon/google-map', {
             setAttributes( { APIkey: pantheonGoogleMapBlockOptions.settings.api_key } ) 
         }
         
-        const {APIkey} = attributes;
+        const {APIkey, location} = attributes;
         
         let blockContent = (
             <div className={className} style={{padding: '1em'}}>
@@ -107,12 +111,34 @@ registerBlockType( 'pantheon/google-map', {
                 </div>
             )
         }
+        
+        if( location === '' || ! location.length ){
+            blockContent = (
+                <div className={`${className} error`} style={{padding: '1em'}}>
+                    <p style={{textAlign: 'center'}}>
+                        {__( 'A location is required. Please enter one in the field above.')  }
+                    </p>
+                </div>
+            )
+        }
+
 		return [
 			focus && (
                 formFields( attributes, setAttributes)
             ),
 			(
-                <div className={className} style={{padding: '1em'}}>
+                <div>
+                    {
+                        <Editable
+                            tagName='p'
+                            style={{padding: '0.5em', textAlign: 'center', border: 'solid 1px rgba(80,80,80,0.5)', margin: '0 1em'}}
+                            placeholder={ __( 'Enter a location…' ) }
+                            value={ location }
+                            focus={ focus && focus.editable === 'location' ? focus : undefined }
+                            onFocus={ setFocus }
+                            onChange={ ( value ) => setAttributes( { location: getLocationString(value) } ) }
+                        />
+                    }
                     {blockContent}
                 </div>
             ),

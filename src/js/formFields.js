@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls, BlockDescription } = wp.blocks;
-const { TextControl, ToggleControl, TextareaControl, RangeControl, SelectControl } = InspectorControls;
+const { TextControl, ToggleControl, RangeControl, SelectControl } = InspectorControls;
 
 /**
  * Declare variables
@@ -14,7 +14,7 @@ const linkOptions = [
 ];
 
 export default function formFields(attributes, setAttributes) {
-    const { location, mapType, zoom, width, height, interactive } = attributes;
+    const { mapType, zoom, width, height, interactive } = attributes;
 
     return (
 
@@ -22,11 +22,6 @@ export default function formFields(attributes, setAttributes) {
             <BlockDescription>
                 <p>{ __( 'This block creates either an interactive Google map or an image. Simply enter text for a location.' ) }</p>
             </BlockDescription>
-            <TextareaControl 
-                label={ __( 'Location' ) } 
-                onChange={ ( value ) => setAttributes( { location: value } ) } 
-                value={location}
-            />
             <TextControl 
                 label={ __( 'Width (in pixels)' ) } 
                 onChange={ ( value ) => setAttributes( { width: Number.parseInt( value, 10 ) } ) }
@@ -60,4 +55,8 @@ export default function formFields(attributes, setAttributes) {
             />
         </InspectorControls>
     );
+}
+
+export function locationField(location, setAttributes, focus, setFocus) {
+    
 }

@@ -5,7 +5,6 @@ import '../css/style.scss'
 import blockIcons from './icons.js'
 import formFields from './formFields.js'
 import getMapHTML from './getMapHTML.js'
-import getLocationString from './getLocationString.js'
 
 /**
  * Get WordPress libraries from the wp global
@@ -13,6 +12,7 @@ import getLocationString from './getLocationString.js'
 const { __ } = wp.i18n;
 const { registerBlockType, Editable } = wp.blocks;
 const { withAPIData } = wp.components;
+const { TextControl  } = wp.blocks.InspectorControls;
 
 /**
  * Register Block.
@@ -129,14 +129,11 @@ registerBlockType( 'pantheon/google-map', {
 			(
                 <div>
                     {
-                        <Editable
-                            tagName='p'
+                        <TextControl 
                             style={{padding: '0.5em', textAlign: 'center', border: 'solid 1px rgba(80,80,80,0.5)', margin: '0 1em'}}
-                            placeholder={ __( 'Enter a location…' ) }
-                            value={ location }
-                            focus={ focus && focus.editable === 'location' ? focus : undefined }
-                            onFocus={ setFocus }
-                            onChange={ ( value ) => setAttributes( { location: getLocationString(value) } ) }
+                            onChange={ ( value ) => setAttributes( { location: value } ) } 
+                            value={location}
+                            placeholder={ __('Location...') }
                         />
                     }
                     {blockContent}

@@ -97,17 +97,15 @@ registerBlockType( 'pantheon/google-map', {
 			!! focus && (
                 formFields( attributes, setAttributes)
             ),
-            <div>
-                { ( ( location === '' || ! location.length ) || !! focus ) ? (
-                    <TextControl 
-                        style={{padding: '0.5em', textAlign: 'center', border: 'solid 1px rgba(100,100,100,0.25)', margin: '0 1em'}}
-                        onChange={ ( value ) => setAttributes( { location: value } ) } 
-                        value={location}
-                        placeholder={ __('Enter a location...') }
-                    />
-                ) : null }
-                {getEditorBlockContent( attributes, className, pantheonGoogleMapBlockOptions )}
-            </div>,
+            ( ( location === '' || ! location.length ) || !! focus ) ? (
+                <TextControl 
+                    style={{padding: '0.5em', textAlign: 'center', border: 'solid 1px rgba(100,100,100,0.25)', margin: '0 1em'}}
+                    onChange={ ( value ) => setAttributes( { location: value } ) } 
+                    value={location}
+                    placeholder={ __('Enter a location...') }
+                />
+            ) : null,
+            getEditorBlockContent( attributes, className, pantheonGoogleMapBlockOptions )
 		];
 	} ),
 

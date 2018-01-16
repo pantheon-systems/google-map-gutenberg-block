@@ -5,10 +5,7 @@ const BrowserSyncPlugin = require( 'browser-sync-webpack-plugin' );
 
 // Set different CSS extraction for editor only and common block styles
 const blocksCSSPlugin = new ExtractTextPlugin( {
-  filename: './assets/css/block.style.css',
-} );
-const editBlocksCSSPlugin = new ExtractTextPlugin( {
-  filename: './assets/css/block.editor.css',
+  filename: './assets/css/style.min.css',
 } );
 
 // Configuration for the ExtractTextPlugin.
@@ -33,8 +30,7 @@ const extractConfig = {
 
 module.exports = {
   entry: {
-    './assets/js/block': './src/js/block.js',
-    './assets/js/block.editor': './src/js/block.editor.js',
+    './assets/js/index': './src/js/index.js',
   },
   output: {
     path: path.resolve( __dirname ),
@@ -55,15 +51,10 @@ module.exports = {
         test: /style\.s?css$/,
         use: blocksCSSPlugin.extract( extractConfig ),
       },
-      {
-        test: /editor\.s?css$/,
-        use: editBlocksCSSPlugin.extract( extractConfig ),
-      },
     ],
   },
   plugins: [
     blocksCSSPlugin,
-    editBlocksCSSPlugin,
     new BrowserSyncPlugin({
         // Load localhost:3333 to view proxied site
         host: 'localhost',

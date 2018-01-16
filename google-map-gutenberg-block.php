@@ -22,54 +22,15 @@ if (! defined('ABSPATH')) {
 }
 
 /**
- * Enqueue block editor only JavaScript and CSS
- *
- * @return void
- */
-function editorScripts()
-{
-
-    // Make paths variables so we don't write em twice ;)
-    $blockPath = 'assets/js/block.editor.min.js';
-    $editorStylePath = 'assets/css/editor.css';
-
-    // Enqueue the bundled block JS file
-    if (file_exists(plugin_dir_path(__FILE__) . $blockPath)) {
-        wp_enqueue_script(
-            'pantheon-google-map-block-js',
-            plugins_url($blockPath, __FILE__),
-            [ 'wp-i18n', 'wp-element', 'wp-blocks', 'wp-components', 'wp-api' ],
-            filemtime(plugin_dir_path(__FILE__) . $blockPath)
-        );
-    }
-
-
-    // Enqueue optional editor only styles
-    if (file_exists(plugin_dir_path(__FILE__) . $editorStylePath)) {
-        wp_enqueue_style(
-            'pantheon-google-map-block-editor-css',
-            plugins_url($editorStylePath, __FILE__),
-            [ 'wp-blocks' ],
-            filemtime(plugin_dir_path(__FILE__) . $editorStylePath)
-        );
-    }
-
-}
-
-// Hook scripts function into block editor hook
-add_action('enqueue_block_editor_assets', __NAMESPACE__ . '\\editorScripts');
-
-
-/**
  * Enqueue block editor JavaScript and CSS
  * 
  * @return void
  */
 function blockScripts()
 {
-    $blockPath = 'assets/js/block.min.js';
+    $blockPath = 'assets/js/index.min.js';
     // Make paths variables so we don't write em twice ;)
-    $stylePath = 'assets/css/style.css';
+    $stylePath = 'assets/css/style.min.css';
 
     // Enqueue the bundled block JS file
     if (file_exists(plugin_dir_path(__FILE__) . $blockPath)) {

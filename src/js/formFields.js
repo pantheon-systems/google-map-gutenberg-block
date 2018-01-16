@@ -13,8 +13,16 @@ const linkOptions = [
     {value: 'satellite', label: __( 'satellite' ) },
 ];
 
+const aspectRatioOptions = [
+    {value: '2_1', label: __( '2:1' ) },
+    {value: '1_1', label: __( '1:1' ) },
+    {value: '4_3', label: __( '4:3' ) },
+    {value: '16_9', label: __( '16:9' ) },
+    {value: '1_2', label: __( '1:2' ) },
+];
+
 export default function formFields(attributes, setAttributes) {
-    const { mapType, zoom, width, height, interactive } = attributes;
+    const { mapType, zoom, interactive, maxWidth, maxHeight, aspectRatio } = attributes;
 
     return (
 
@@ -22,18 +30,15 @@ export default function formFields(attributes, setAttributes) {
             <BlockDescription>
                 <p>{ __( 'This block creates either an interactive Google map or an image. Simply enter text for a location above the map and adjust advanced settings below.' ) }</p>
             </BlockDescription>
-            <TextControl 
-                label={ __( 'Width (in pixels)' ) } 
-                onChange={ ( value ) => setAttributes( { width: Number.parseInt( value, 10 ) } ) }
-                value={width}
-                type='number'
-            />
-            <TextControl 
-                label={ __( 'Height (in pixels)' ) } 
-                onChange={ ( value ) => setAttributes( { height: Number.parseInt( value, 10 ) } ) }
-                value={height}
-                type='number'
-            />
+            {!! interactive && (
+                <SelectControl
+                    label={ __( 'Aspect Ratio' ) } 
+                    select={aspectRatio} 
+                    options={aspectRatioOptions} 
+                    onChange={ ( value ) => setAttributes( { aspectRatio: value } ) } 
+                    value={ aspectRatio }
+                />
+            )}
             <RangeControl
                 label={ __( 'Zoom Level' ) }
                 value={ zoom }
@@ -53,6 +58,26 @@ export default function formFields(attributes, setAttributes) {
                 checked={ !! interactive }
                 onChange={ () => setAttributes( { interactive: ! interactive } ) }
             />
+           {! interactive && (
+            <div>
+                <TextControl 
+                    label={ __( 'Maximum width (in pixels)' ) } 
+                    onChange={ ( value ) => setAttributes( { maxWidth: Number.parseInt( value, 10 ) } ) }
+                    value={maxWidth}
+                    type='number'
+                    min={0}
+                    step={1}
+                />
+                <TextControl 
+                    label={ __( 'Maximum height (in pixels)' ) } 
+                    onChange={ ( value ) => setAttributes( { maxHeight: Number.parseInt( value, 10 ) } ) }
+                    value={maxHeight}
+                    type='number'
+                    min={0}
+                    step={1}
+                />
+            </div>
+           )}
         </InspectorControls>
     );
 }

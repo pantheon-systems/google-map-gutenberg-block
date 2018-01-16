@@ -1,4 +1,4 @@
-/**
+ /**
  * Import internal dependencies
  */
 import '../css/style.scss'
@@ -11,7 +11,7 @@ import getEditorBlockContent from './getEditorBlockContent.js'
  * Get WordPress libraries from the wp global
  */
 const { __ } = wp.i18n;
-const { registerBlockType, Editable } = wp.blocks;
+const { registerBlockType } = wp.blocks;
 const { withAPIData } = wp.components;
 const { TextControl  } = wp.blocks.InspectorControls;
 
@@ -45,20 +45,21 @@ registerBlockType( 'pantheon/google-map', {
 			type: 'number',
 			default: 13,
 		},
-		width: {
+		maxWidth: {
 			type: 'number',
-			default: 650,
+			default: 1920,
 		},
-		height: {
+		maxHeight: {
 			type: 'number',
-			default: 450,
+			default: 1329,
 		},
 		interactive: {
-			type: 'bool',
+			type: 'boolean',
 			default: true,
 		},
-		align: {
-			type: 'string',
+		aspectRatio: {
+            type: 'string',
+            default: '2_1',
 		},
 		APIkey: {
 			type: 'string',
@@ -90,7 +91,7 @@ registerBlockType( 'pantheon/google-map', {
         
         setAttributes( { APIkey: pantheonGoogleMapBlockOptions.settings.api_key } ) 
         
-        const {APIkey, location} = attributes;
+        const {APIkey, location, alignment} = attributes;
 
 		return [
 			!! focus && (
@@ -110,7 +111,19 @@ registerBlockType( 'pantheon/google-map', {
 		];
 	} ),
 
-	save( { attributes } ) {
-        return getMapHTML( attributes );
+	save( { attributes, className } ) {
+        const {aspectRatio, interactive} = attributes
+        let classNames = `${className} ratio${aspectRatio}`
+        if( !! interactive ){
+            classNames = `${classNames} interactive`
+        }
+
+        return (
+            <div className={classNames}>
+                <div className="map">
+                    {getMapHTML( attributes )}
+                </div>
+            </div>
+        )
 	},
 } );

@@ -10,11 +10,12 @@ const { __ } = wp.i18n;
 
 export default function getEditorBlockContent( attributes, className, pantheonGoogleMapBlockOptions ){
 
-    const {APIkey, location} = attributes;
+    const {APIkey, location, aspectRatio, interactive} = attributes;
+    const editorPadding = '0 1em';
 
     if( APIkey === '' || ! APIkey.length ){
         return (
-            <div className={`${className} error`} style={{padding: '1em'}}>
+            <div className={`${className} error`} style={{padding: editorPadding}}>
                 <p style={{textAlign: 'center'}}>
                     {__( 'A Google Maps API key is required.')  }&nbsp;
                     <a href={pantheonGoogleMapBlockOptions.settings_url}>
@@ -27,7 +28,7 @@ export default function getEditorBlockContent( attributes, className, pantheonGo
     
     if( location === '' || ! location.length ){
         return (
-            <div className={`${className} error`} style={{padding: '1em'}}>
+            <div className={`${className} error`} style={{padding: editorPadding}}>
                 <p style={{textAlign: 'center'}}>
                     {__( 'A location is required. Please enter one in the field above.')  }
                 </p>
@@ -35,9 +36,16 @@ export default function getEditorBlockContent( attributes, className, pantheonGo
         )
     }
 
+    let classNames = `${className} ratio${aspectRatio}`
+    if( !! interactive ){
+        classNames = `${classNames} interactive`
+    }
+
     return (
-        <div className={className} style={{padding: '1em'}}>
-            {getMapHTML( attributes )}
+        <div className={classNames}>
+            <div className="map">
+                {getMapHTML( attributes )}
+            </div>
         </div>
     )
 

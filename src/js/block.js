@@ -5,6 +5,7 @@ import '../css/style.scss'
 import blockIcons from './icons.js'
 import formFields from './formFields.js'
 import getMapHTML from './getMapHTML.js'
+import getEditorBlockContent from './getEditorBlockContent.js'
 
 /**
  * Get WordPress libraries from the wp global
@@ -34,7 +35,7 @@ registerBlockType( 'pantheon/google-map', {
 	attributes: {
 		location: {
             type: 'string',
-			default: __( 'Pantheon, San Francisco, CA' ),
+			default: '',
 		},
 		mapType: {
             type: 'string',
@@ -87,58 +88,25 @@ registerBlockType( 'pantheon/google-map', {
         
         const pantheonGoogleMapBlockOptions = APIData.data;
         
-        if( attributes.APIkey === '' ){
-            setAttributes( { APIkey: pantheonGoogleMapBlockOptions.settings.api_key } ) 
-        }
+        setAttributes( { APIkey: pantheonGoogleMapBlockOptions.settings.api_key } ) 
         
         const {APIkey, location} = attributes;
-        
-        let blockContent = (
-            <div className={className} style={{padding: '1em'}}>
-                {getMapHTML( attributes )}
-            </div>
-        )
-
-        if( APIkey === '' ){
-            blockContent = (
-                <div className={`${className} error`} style={{padding: '1em'}}>
-                    <p style={{textAlign: 'center'}}>
-                        {__( 'A Google Maps API key is required.')  }&nbsp;
-                        <a href={pantheonGoogleMapBlockOptions.settings_url}>
-                        {__( 'View plugin settings to add an API key.')  }
-                        </a>
-                    </p>
-                </div>
-            )
-        }
-        
-        if( location === '' || ! location.length ){
-            blockContent = (
-                <div className={`${className} error`} style={{padding: '1em'}}>
-                    <p style={{textAlign: 'center'}}>
-                        {__( 'A location is required. Please enter one in the field above.')  }
-                    </p>
-                </div>
-            )
-        }
 
 		return [
-			focus && (
+			!! focus && (
                 formFields( attributes, setAttributes)
             ),
-			(
-                <div>
-                    {
-                        <TextControl 
-                            style={{padding: '0.5em', textAlign: 'center', border: 'solid 1px rgba(80,80,80,0.5)', margin: '0 1em'}}
-                            onChange={ ( value ) => setAttributes( { location: value } ) } 
-                            value={location}
-                            placeholder={ __('Location...') }
-                        />
-                    }
-                    {blockContent}
-                </div>
-            ),
+            <div>
+                { ( ( location === '' || ! location.length ) || !! focus ) ? (
+                    <TextControl 
+                        style={{padding: '0.5em', textAlign: 'center', border: 'solid 1px rgba(100,100,100,0.25)', margin: '0 1em'}}
+                        onChange={ ( value ) => setAttributes( { location: value } ) } 
+                        value={location}
+                        placeholder={ __('Enter a location...') }
+                    />
+                ) : null }
+                {getEditorBlockContent( attributes, className, pantheonGoogleMapBlockOptions )}
+            </div>,
 		];
 	} ),
 

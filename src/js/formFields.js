@@ -20,7 +20,7 @@ export default function formFields(attributes, setAttributes) {
 
         <InspectorControls key="inspector">
             <BlockDescription>
-                <p>{ __( 'This block creates either an interactive Google map or an image. Simply enter text for a location.' ) }</p>
+                <p>{ __( 'This block creates either an interactive Google map or an image. Simply enter text for a location above the map and adjust advanced settings below.' ) }</p>
             </BlockDescription>
             <TextControl 
                 label={ __( 'Width (in pixels)' ) } 

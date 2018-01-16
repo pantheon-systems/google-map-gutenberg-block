@@ -69,7 +69,8 @@ module.exports = {
         host: 'localhost',
         port: '3333',
         // Change proxy to your local WordPress URL
-        proxy: 'https://wp-clean.dev'
+        proxy: 'https://wp-clean.dev',
+        open: false
     })
   ],
 };

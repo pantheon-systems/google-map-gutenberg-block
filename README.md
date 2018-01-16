@@ -13,6 +13,6 @@ Note: The API key will be exposed publicly to generate the map. It is important 
 Rate limits (at the time of publishing) are `2,000,000` per day. Each request, both on the frontend and in the admin/editor, count towards this total.
 
 ## Use
-Once you have saved an API key into the plugin settings simply enter a location, such as New York, New York, or a full address and choose the map width, height and zoom level into the block settings. You can toggle between an interactive map or a static image as well.
+Once you have saved an API key into the plugin settings simply enter a location, such as New York, NY, or a full address. You may also choose the map width, height, zoom level and toggle between an interactive map or a static image in the block settings, which are visible in the right-hand sidebar when the block is selected.
 
 ![Google Map Gutenberg Block Demo](./assets/images/google-map-block-demo.gif)

@@ -1,5 +1,5 @@
-# Pantheon Google Maps Gutenberg Block
-This plugin provides a Google Maps block for the [Gutenberg WordPress editor](https://github.com/WordPress/gutenberg). 
+# Map Embed Gutenberg Block for Google Maps By Pantheon
+This plugin provides a Google Maps embed block for the [Gutenberg WordPress editor](https://github.com/WordPress/gutenberg). 
 
 ## API Key
 [Google Maps Embeds](https://developers.google.com/maps/documentation/embed/guide) requires [an API key](https://developers.google.com/maps/documentation/embed/get-api-key) to function properly. 

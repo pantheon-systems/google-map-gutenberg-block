@@ -24,7 +24,8 @@ The Map Embed Gutenberg Block for Google Maps By Pantheon plugin can be installe
 1. Upload the plugin to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Obtain a Google Map embed API key
-1. Visit the plugin settings page and enter/save your Google Map embedAPI key
+1. Visit the plugin settings page and enter/save your Google Map embed API key
+1. Clear full page cache if enabled for your site so the API key can be read from the plugin settings via the REST API
 1. Search for _Google Map_ when adding a new content block
 1. Enter a location for the map. This can be an exact address for a queryable location, such as _New York, NY_
 1. Optionally edit the advanced block settings

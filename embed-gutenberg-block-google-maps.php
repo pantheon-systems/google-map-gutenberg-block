@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name: Map Embed Gutenberg Block for Google Maps By Pantheon
- * Description: A plugin enabling a Google Map Gutenberg block
+ * Plugin Name: Gutenberg Block for Google Maps Embed By Pantheon
+ * Description: A plugin enabling a Google Map embed Gutenberg block
  * Author: Pantheon, Andrew Taylor
  * Author URI: https://pantheon.io/
  * Version: 1.0.0

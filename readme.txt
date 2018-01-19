@@ -1,4 +1,4 @@
-=== Map Embed Gutenberg Block for Google Maps By Pantheon ===
+=== Gutenberg Block For Google Maps Embed By Pantheon ===
 Contributors: andrew.taylor
 Tags: map, gutenberg, google, embed
 Author URI: https://pantheon.io/
@@ -18,7 +18,7 @@ This plugin provides a Google Maps embed block for the [Gutenberg WordPress edit
  
 == Installation ==
  
-The Map Embed Gutenberg Block for Google Maps By Pantheon plugin can be installed just like you would install any other WordPress plugin. Because Google Map embes require an API key you'll need to provide a valid API key in plugin settings as well. See the detailed steps below.
+This plugin can be installed just like you would install any other WordPress plugin. Because Google Map embes require an API key you'll need to provide a valid API key in plugin settings as well. See the detailed steps below.
  
 1. Install and activate the Gutenberg plugin if you are on a WordPress version <= `5.0`
 1. Upload the plugin to the `/wp-content/plugins/` directory

@@ -48,7 +48,7 @@ export default function getEditorBlockContent( attributes, className, pantheonGo
             return (
                 <div className={`${className} error`} style={{padding: editorPadding}}>
                     <p style={{textAlign: 'center'}}>
-                        {err}
+                        {error}
                     </p>
                 </div>
             )

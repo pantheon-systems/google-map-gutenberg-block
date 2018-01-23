@@ -1,7 +1,14 @@
 /**
+ * Import external dependencies
+ */
+import request from 'request'
+
+ /**
  * Import internal dependencies
  */
 import getMapHTML from './getMapHTML.js'
+import getMapURL from './getMapURL.js'
+import { stat } from 'fs';
 
 /**
  * Get WordPress libraries from the wp global
@@ -12,6 +19,8 @@ export default function getEditorBlockContent( attributes, className, pantheonGo
 
     const {APIkey, location, aspectRatio, interactive} = attributes;
     const editorPadding = '0 1em';
+    const mapURL = getMapURL( attributes );
+    let waitOnGooglePing = true
 
     if( APIkey === '' || ! APIkey.length ){
         return (
@@ -25,7 +34,7 @@ export default function getEditorBlockContent( attributes, className, pantheonGo
             </div>
         )
     }
-    
+
     if( location === '' || ! location.length ){
         return (
             <div className={`${className} error`} style={{padding: editorPadding}}>
@@ -35,6 +44,56 @@ export default function getEditorBlockContent( attributes, className, pantheonGo
             </div>
         )
     }
+
+    console.log(`Fetching response from ${mapURL}`)
+
+    request(mapURL, function (error, response, body) {
+        if( body !== undefined ){
+            if( response.statusCode !== 200  ){
+                console.log('Status code not equal 200')
+                return (
+                    <div className={`${className} error`} style={{padding: editorPadding}}>
+                        <p style={{textAlign: 'center'}}>
+                            {body}
+                        </p>
+                    </div>
+                )
+            } else {
+                let classNames = `${className} ratio${aspectRatio}`
+                if( !! interactive ){
+                    classNames = `${classNames} interactive`
+                }
+
+                return (
+                    <div className={classNames}>
+                        <div className="map">
+                            {getMapHTML( attributes )}
+                        </div>
+                    </div>
+                )
+            }
+        } else {
+            return (
+                <div className={`${className} notice notice-warning`} style={{padding:editorPadding}}>
+                    <p style={{textAlign: 'center'}}>
+                        {__( 'Loading map...') }
+                    </p>
+                </div>
+            )
+        }
+
+        if( error ){
+            return (
+                <div className={`${className} error`} style={{padding: editorPadding}}>
+                    <p style={{textAlign: 'center'}}>
+                        {err}
+                    </p>
+                </div>
+            )
+        }
+    })
+
+    /*
 
     let classNames = `${className} ratio${aspectRatio}`
     if( !! interactive ){
@@ -48,5 +107,7 @@ export default function getEditorBlockContent( attributes, className, pantheonGo
             </div>
         </div>
     )
+
+    */
 
 }

@@ -1,4 +1,4 @@
- /**
+/**
  * Import internal dependencies
  */
 import '../css/style.scss'
@@ -76,10 +76,12 @@ registerBlockType( 'pantheon/google-map', {
 			APIData: '/pantheon-google-map-block/v1/options'
 		};
 	} )( ( { APIData, attributes, setAttributes, focus, className, setFocus } )  => {
+
+        const editorPadding = '0 1em';
         
         if( APIData.isLoading || APIData.data === undefined ){
             return (
-                <div className={`${className} notice notice-warning`} style={{padding: '1em'}}>
+                <div className={`${className} notice notice-warning`} style={{padding: editorPadding}}>
                     <p style={{textAlign: 'center'}}>
                         {__( 'Loading map...') }
                     </p>
@@ -99,7 +101,7 @@ registerBlockType( 'pantheon/google-map', {
             ),
             ( ( location === '' || ! location.length ) || !! focus ) ? (
                 <TextControl 
-                    style={{padding: '0.5em', textAlign: 'center', border: 'solid 1px rgba(100,100,100,0.25)', margin: '0 1em'}}
+                    style={{padding: '0.5em', textAlign: 'center', border: 'solid 1px rgba(100,100,100,0.25)', margin: editorPadding}}
                     onChange={ ( value ) => setAttributes( { location: value } ) } 
                     value={location}
                     placeholder={ __('Enter a location...') }

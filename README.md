@@ -19,7 +19,7 @@ Because Google Map embes require an API key you'll need to provide a valid API k
 ## API Key
 [Google Maps Embeds](https://developers.google.com/maps/documentation/embed/guide) requires [an API key](https://developers.google.com/maps/documentation/embed/get-api-key) to function properly. 
 
-To use the static, image version of maps you need to [authorize your API key for the static API](https://console.developers.google.com/apis/api/static_maps_backend) as well.
+To use the static, image version of maps you need to authorize your API key for the static API [here](https://console.developers.google.com/apis/api/static_maps_backend) as well.
 
 **In order for maps to be shown on your site you must enter an API key into plugin settings**
 

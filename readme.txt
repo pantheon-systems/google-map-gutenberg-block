@@ -32,15 +32,29 @@ This plugin can be installed just like you would install any other WordPress plu
  
 == API Key ==
 
-[Google Maps Embeds](https://developers.google.com/maps/documentation/embed/guide) requires [an API key](https://developers.google.com/maps/documentation/embed/get-api-key) to function properly. 
+This plugin requires an API key to interact with Google Maps. Without an API key maps will not be displayed.
 
-To use the static, image version of maps you need to authorize your API key for the static API [here](https://console.developers.google.com/apis/api/static_maps_backend) as well.
+To obtain an API key follow these steps:
+1. Create a [new project in the Google Developer's console](https://console.developers.google.com/projectcreate)
+1. Open [the API library](https://console.developers.google.com/apis/library)
+1. Search for "map embed"
+1. Select _Google Maps Embed API_ and enable the API
+1. Go back to [the API library](https://console.developers.google.com/apis/library)
+1. Search for "map embed"
+1. Select _Google Static Maps API_ and enable the API
+1. Go to [Credentials](https://console.developers.google.com/apis/credentials)
+1. Click _Create credentials > API Key_
+1. Save the API key shown in a safe place
+1. Click _Restict Key_
+1. Select _HTTP referrers (web sites)_  for the _Key restriction_ type
+1. Enter the domains where your API key will be used
+    - Example: `*.mysite.com`
+1. Enter the API key into the plugin settings
+1. Clear full page caching, if necessary
 
-**In order for maps to be shown on your site you must enter an API key into plugin settings**
+![Google Map Gutenberg Block API Setting](./assets/images/screenshot-2.png)
 
-Note: The API key will be exposed publicly to generate the map. It is important to [restrict your API key](https://developers.google.com/maps/documentation/embed/get-api-key#key-restrictions) so others do not abuse it. They can be restricted by domain or IP address.
-
-Rate limits (at the time of publishing) are `2,000,000` per day. Each request, both on the frontend and in the admin/editor, count towards this total.
+Note: The API key will be exposed publicly to generate the map. It is important to [restrict your API key](https://developers.google.com/maps/documentation/embed/get-api-key#key-restrictions) so others do not abuse it. The API key will be used, and displayed, in both the WordPress editor and the front end of the site.
 
 == Use ==
 

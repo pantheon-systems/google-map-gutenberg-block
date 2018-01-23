@@ -34,6 +34,8 @@ This plugin can be installed just like you would install any other WordPress plu
 
 [Google Maps Embeds](https://developers.google.com/maps/documentation/embed/guide) requires [an API key](https://developers.google.com/maps/documentation/embed/get-api-key) to function properly. 
 
+To use the static, image version of maps you need to [authorize your API key for the static API](https://console.developers.google.com/apis/api/static_maps_backend) as well.
+
 **In order for maps to be shown on your site you must enter an API key into plugin settings**
 
 Note: The API key will be exposed publicly to generate the map. It is important to [restrict your API key](https://developers.google.com/maps/documentation/embed/get-api-key#key-restrictions) so others do not abuse it. They can be restricted by domain or IP address.

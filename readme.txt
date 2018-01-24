@@ -35,20 +35,13 @@ This plugin can be installed just like you would install any other WordPress plu
 This plugin requires an API key to interact with Google Maps. Without an API key maps will not be displayed.
 
 To obtain an API key follow these steps:
-1. Create a [new project in the Google Developer's console](https://console.developers.google.com/projectcreate)
-1. Open [the API library](https://console.developers.google.com/apis/library)
-1. Search for "map embed"
-1. Select _Google Maps Embed API_ and enable the API
-1. Go back to [the API library](https://console.developers.google.com/apis/library)
-1. Search for "map embed"
-1. Select _Google Static Maps API_ and enable the API
-1. Go to [Credentials](https://console.developers.google.com/apis/credentials)
-1. Click _Create credentials > API Key_
-1. Save the API key shown in a safe place
-1. Click _Restict Key_
+1. Create a new project in the Google Developer's console by clicking [here](https://console.developers.google.com/flows/enableapi?apiid=maps_backend,static_maps_backend,maps_embed_backend&keyType=CLIENT_SIDE&reusekey=true) and selecting _Create new project_
+1. Name your project
 1. Select _HTTP referrers (web sites)_  for the _Key restriction_ type
 1. Enter the domains where your API key will be used
     - Example: `*.mysite.com`
+1. Click the _Create_ button
+1. Write your API key down in a safe place
 1. Enter the API key into the plugin settings
 1. Clear full page caching, if necessary
 

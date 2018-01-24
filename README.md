@@ -9,7 +9,7 @@ Because Google Map embes require an API key you'll need to provide a valid API k
 1. Install and activate the Gutenberg plugin if you are on a WordPress version <= `5.0`
 1. Search for 'embed-gutenberg-block-google-maps' when adding a new plugin in the WordPress dashboard **or** upload the plugin files manually to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Obtain a [Google Map embed API key](https://developers.google.com/maps/documentation/embed/get-api-key)
+1. Obtain a Google Map embed API key (instructions below)
 1. Visit the plugin settings page and enter/save your Google Map embed API key
 1. Clear full page cache if enabled for your site so the API key can be read from the plugin settings via the REST API
 1. Search for _Google Map_ when adding a new content block

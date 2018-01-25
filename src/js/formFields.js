@@ -14,8 +14,6 @@ export default class formFields extends Component {
       }    
     
     render (){
-        console.log(this.props);
-        return (<h1>Some controls!</h1>)
         
         console.log(this.props);
         const { setState, saveApiKey, apiKey, setAttributes, attributes } = this.props;

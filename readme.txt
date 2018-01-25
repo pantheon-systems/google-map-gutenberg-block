@@ -23,7 +23,7 @@ This plugin can be installed just like you would install any other WordPress plu
 1. Install and activate the Gutenberg plugin if you are on a WordPress version <= `5.0`
 1. Upload the plugin to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Obtain a Google Map embed API key
+1. Obtain a Google Map embed API key (instructions below)
 1. Visit the plugin settings page and enter/save your Google Map embed API key
 1. Clear full page cache if enabled for your site so the API key can be read from the plugin settings via the REST API
 1. Search for _Google Map_ when adding a new content block
@@ -32,13 +32,22 @@ This plugin can be installed just like you would install any other WordPress plu
  
 == API Key ==
 
-[Google Maps Embeds](https://developers.google.com/maps/documentation/embed/guide) requires [an API key](https://developers.google.com/maps/documentation/embed/get-api-key) to function properly. 
+This plugin requires an API key to interact with Google Maps. Without an API key maps will not be displayed.
 
-**In order for maps to be shown on your site you must enter an API key into plugin settings**
+To obtain an API key follow these steps:
+1. Create a new project in the Google Developer's console by clicking [here](https://console.developers.google.com/flows/enableapi?apiid=maps_backend,static_maps_backend,maps_embed_backend&keyType=CLIENT_SIDE&reusekey=true) and selecting _Create new project_
+1. Name your project
+1. Select _HTTP referrers (web sites)_  for the _Key restriction_ type
+1. Enter the domains where your API key will be used
+    - Example: `*.mysite.com`
+1. Click the _Create_ button
+1. Write your API key down in a safe place
+1. Enter the API key into the plugin settings
+1. Clear full page caching, if necessary
 
-Note: The API key will be exposed publicly to generate the map. It is important to [restrict your API key](https://developers.google.com/maps/documentation/embed/get-api-key#key-restrictions) so others do not abuse it. They can be restricted by domain or IP address.
+![Google Map Gutenberg Block API Setting](./assets/images/screenshot-2.png)
 
-Rate limits (at the time of publishing) are `2,000,000` per day. Each request, both on the frontend and in the admin/editor, count towards this total.
+Note: The API key will be exposed publicly to generate the map. It is important to [restrict your API key](https://developers.google.com/maps/documentation/embed/get-api-key#key-restrictions) so others do not abuse it. The API key will be used, and displayed, in both the WordPress editor and the front end of the site.
 
 == Use ==
 

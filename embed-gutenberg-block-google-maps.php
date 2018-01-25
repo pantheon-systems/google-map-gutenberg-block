@@ -188,7 +188,7 @@ class SettingsPage
     {
         printf(
             '<input type="text" id="api_key" name="pantheon_google_map_block_options[api_key]" style="%s" value="%s" />
-            <p class="description">The Google Map will not work without an API key. You can obtain one <a href="https://developers.google.com/maps/documentation/embed/get-api-key">here</a>. <br />
+            <p class="description">The Google Map will not work without an API key. You can obtain one <a href="https://console.developers.google.com/flows/enableapi?apiid=maps_backend,static_maps_backend,maps_embed_backend&keyType=CLIENT_SIDE&reusekey=true">here</a>. <br />
             The API key will be exposed publicly to generate the map. It is important to <a href="https://developers.google.com/maps/documentation/embed/get-api-key#key-restrictions">restrict your API key</a> so others do not abuse it.
             </p>
             ',

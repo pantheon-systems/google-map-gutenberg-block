@@ -1,7 +1,13 @@
 /**
+ * Import external dependencies
+ */
+import request from 'request'
+
+ /**
  * Import internal dependencies
  */
 import getMapHTML from './getMapHTML.js'
+import getMapURL from './getMapURL.js'
 
 /**
  * Get WordPress libraries from the wp global
@@ -10,8 +16,9 @@ const { __ } = wp.i18n;
 
 export default function getEditorBlockContent( attributes, className, pantheonGoogleMapBlockOptions ){
 
-    const {APIkey, location, aspectRatio, interactive} = attributes;
-    const editorPadding = '0 1em';
+    const {APIkey, location, aspectRatio, interactive} = attributes
+    const editorPadding = '0 1em'
+    const mapURL = getMapURL( attributes )
 
     if( APIkey === '' || ! APIkey.length ){
         return (
@@ -25,7 +32,7 @@ export default function getEditorBlockContent( attributes, className, pantheonGo
             </div>
         )
     }
-    
+
     if( location === '' || ! location.length ){
         return (
             <div className={`${className} error`} style={{padding: editorPadding}}>
@@ -35,6 +42,40 @@ export default function getEditorBlockContent( attributes, className, pantheonGo
             </div>
         )
     }
+
+    request(mapURL, function (error, response, body) {
+        if( error ){
+            return (
+                <div className={`${className} error`} style={{padding: editorPadding}}>
+                    <p style={{textAlign: 'center'}}>
+                        {error}
+                    </p>
+                </div>
+            )
+        }
+        
+        if( body === undefined ){
+            return (
+                <div className={`${className} notice notice-warning`} style={{padding:editorPadding}}>
+                    <p style={{textAlign: 'center'}}>
+                        {__( 'Loading map...') }
+                    </p>
+                </div>
+            )
+        }
+        
+        if( response.statusCode !== 200  ){
+            console.error(body)
+            return (
+                <div className={`${className} error`} style={{padding: editorPadding}}>
+                    <p style={{textAlign: 'center'}}>
+                        {body}
+                    </p>
+                </div>
+            )
+        }
+
+    })
 
     let classNames = `${className} ratio${aspectRatio}`
     if( !! interactive ){

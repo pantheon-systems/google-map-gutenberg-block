@@ -5,7 +5,7 @@ const { __ } = wp.i18n;
 const { InspectorControls } = wp.blocks;
 const { TextControl, ToggleControl, RangeControl, SelectControl } = InspectorControls;
 const { Button } = wp.components;
-const { Component, PanelBody, PanelRow, FormToggle } = wp.element;
+const { Component, PanelBody, PanelRow } = wp.element;
 
 export default class formFields extends Component {
 
@@ -50,7 +50,7 @@ export default class formFields extends Component {
                         <Button isPrimary onClick={ saveApiKey }>
                             {__('Save API key')}
                         </Button>
-                        {!! interactive && (
+                        {!! interactive ? (
                             <SelectControl
                                 label={ __( 'Aspect Ratio' ) } 
                                 select={aspectRatio} 
@@ -58,7 +58,7 @@ export default class formFields extends Component {
                                 onChange={ ( value ) => setAttributes( { aspectRatio: value } ) } 
                                 value={ aspectRatio }
                             />
-                        )}
+                        ) : null}
                         <RangeControl
                             label={ __( 'Zoom Level' ) }
                             value={ zoom }
@@ -78,7 +78,7 @@ export default class formFields extends Component {
                             checked={ !! interactive }
                             onChange={ () => setAttributes( { interactive: ! interactive } ) }
                         />
-                        {! interactive && (
+                        {! interactive ? (
                             <div>
                                 <TextControl 
                                     label={ __( 'Maximum width (in pixels)' ) } 
@@ -97,7 +97,7 @@ export default class formFields extends Component {
                                     step={1}
                                 />
                             </div>
-                        )}
+                        ) : null}
                     </PanelRow>
                 </PanelBody>
             </InspectorControls>

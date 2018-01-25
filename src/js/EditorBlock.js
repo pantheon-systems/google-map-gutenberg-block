@@ -13,9 +13,8 @@ const { __ } = wp.i18n;
 // const { TextControl  } = wp.blocks.InspectorControls;
 // const { Component } = wp.element;
 const { Button } = wp.components;
-const { InspectorControls } = wp.blocks;
-const { TextControl, ToggleControl, RangeControl, SelectControl } = InspectorControls;
-const { Component, PanelBody, PanelRow, FormToggle } = wp.element;
+const { TextControl } = wp.blocks.InspectorControls;
+const { Component } = wp.element;
 
 export default class EditorBlock extends Component {
     constructor() {

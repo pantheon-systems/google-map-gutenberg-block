@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
 // Set different CSS extraction for editor only and common block styles
 const blocksCSSPlugin = new ExtractTextPlugin({
@@ -58,14 +57,6 @@ module.exports = {
         ],
     },
     plugins: [
-        blocksCSSPlugin,
-        new BrowserSyncPlugin({
-            // Load localhost:3333 to view proxied site
-            host: 'localhost',
-            port: '3333',
-            // Change proxy to your local WordPress URL
-            proxy: 'https://wp-clean.dev',
-            open: false
-        })
+        blocksCSSPlugin
     ],
 };

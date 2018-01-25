@@ -3,17 +3,13 @@
  */
 import '../css/style.scss'
 import blockIcons from './icons.js'
-import formFields from './formFields.js'
-import getMapHTML from './getMapHTML.js'
-import getEditorBlockContent from './getEditorBlockContent.js'
+import EditorBlock from './EditorBlock.js'
 
 /**
  * Get WordPress libraries from the wp global
  */
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
-const { withAPIData } = wp.components;
-const { TextControl  } = wp.blocks.InspectorControls;
 
 /**
  * Register Block.
@@ -25,55 +21,19 @@ const { TextControl  } = wp.blocks.InspectorControls;
  */
 registerBlockType( 'pantheon/google-map', {
 	title: __( 'Google Map' ),
-    
-    description: __( 'Google Map' ),
-	
+    description: __( 'This block creates either an interactive Google map or an image. Simply enter text for a location above the map and adjust advanced settings below.' ),
 	icon: blockIcons.googleMap,
-	
 	category: 'embed',
+	supports: {html: true},
+	edit: EditorBlock,
+    save() { return null }
+});
 
-	attributes: {
-		location: {
-            type: 'string',
-			default: '',
-		},
-		mapType: {
-            type: 'string',
-            default: 'roadmap',
-		},
-		zoom: {
-			type: 'number',
-			default: 13,
-		},
-		maxWidth: {
-			type: 'number',
-			default: 1920,
-		},
-		maxHeight: {
-			type: 'number',
-			default: 1329,
-		},
-		interactive: {
-			type: 'boolean',
-			default: true,
-		},
-		aspectRatio: {
-            type: 'string',
-            default: '2_1',
-		},
-		APIkey: {
-			type: 'string',
-			default: '',
-		},
-	},
+/*
 
-	supports: {
-		html: true,
-	},
-
-	edit: withAPIData( () => {
+withAPIData( () => {
 		return {
-			APIData: '/pantheon-google-map-block/v1/options'
+			APIData: '/wp/v2/settings'
 		};
 	} )( ( { APIData, attributes, setAttributes, focus, className, setFocus } )  => {
 
@@ -88,6 +48,8 @@ registerBlockType( 'pantheon/google-map', {
                 </div>
             )
         }
+
+        return null;
         
         const pantheonGoogleMapBlockOptions = APIData.data;
         
@@ -111,19 +73,107 @@ registerBlockType( 'pantheon/google-map', {
 		];
 	} ),
 
-	save( { attributes, className } ) {
-        const {aspectRatio, interactive} = attributes
-        let classNames = `${className} ratio${aspectRatio}`
-        if( !! interactive ){
-            classNames = `${classNames} interactive`
-        }
 
-        return (
-            <div className={classNames}>
-                <div className="map">
-                    {getMapHTML( attributes )}
-                </div>
-            </div>
-        )
+registerBlockType( 'mdlr/instagram', {
+	title: __( 'Instagram' ),
+	icon: 'camera',
+	category: 'common',
+	attributes: {
+		content: {
+			type: 'string',
+			default: 'Editable block example',
+		},
+		apiKey: {
+			type: 'string',
+			default: '',
+		},
+		refresh: {
+			type: 'boolean',
+			default: true,
+		}
+	},
+	edit: class extends Component {
+		constructor() {
+			super( ...arguments );
+
+			this.saveApiKey = this.saveApiKey.bind( this );
+			this.clearApiKey = this.clearApiKey.bind( this );
+
+			this.state = {
+				apiKey: '',
+				isSavedKey: false
+			};
+
+			const model = new wp.api.models.Settings();
+			model.fetch().then( response => {
+				this.setState({ apiKey: response.mdlr_block_instagram_api_key });
+				if (this.state.apiKey) {
+					this.setState({ isSavedKey: true });
+				}
+			});
+		}
+
+		saveApiKey() {
+			const model = new wp.api.models.Settings({ mdlr_block_instagram_api_key:this.state.apiKey });
+			model.save().then( response => {
+				this.setState({ isSavedKey: true });
+			});
+		}
+
+		clearApiKey() {
+			const model = new wp.api.models.Settings({ mdlr_block_instagram_api_key:'' });
+			model.save().then( response => {
+				this.setState({ isSavedKey: false, apiKey: '' });
+			});
+		}
+
+		render() {
+			const { attributes, className, focus, setAttributes, setFocus } = this.props;
+
+			if ( ! this.state.isSavedKey  ) {
+				return (
+					<div>
+						<p>You need an api key:</p>
+
+						<TextControl
+							key="api-input"
+							className={ className }
+							value={ this.state.apiKey }
+							onChange={ value => this.setState({ apiKey: value }) }
+						/>
+						<button onClick={ this.saveApiKey }>Save API key</button>
+					</div>
+				);
+			}
+
+			const inspectorControls = focus && (
+				<InspectorControls key="inspector">
+					<h3>{ __( 'Instagram Settings' ) }</h3>
+					<TextControl
+						key="api-input"
+						className={ className }
+						value={ this.state.apiKey }
+						onChange={ value => this.setState({ apiKey: value }) }
+					/>
+					<button onClick={ this.saveApiKey }>Save API key</button>
+				</InspectorControls>
+			);
+
+			return [
+				inspectorControls,
+				<div>
+					<h2>Instagram stuff</h2>
+				</div>
+
+			];
+
+		}
+	},
+
+	save( { attributes, className } ) {
+		const { content } = attributes;
+
+		return (<p className={ className }>{ content }</p>);
 	},
 } );
+*/

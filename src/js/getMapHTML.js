@@ -1,12 +1,13 @@
 import getMapURL from './getMapURL.js'
 
-export default function getMapHTML( attributes ){
-    const { interactive, APIkey } = attributes
-    const mapURL = getMapURL( attributes )
-
-    if( APIkey === '' ){
+export default function getMapHTML( attributes, apiKey ){
+    const { interactive } = attributes
+    
+    if( apiKey === '' || apiKey === undefined ){
         return null
     }
+    
+    const mapURL = getMapURL( attributes, apiKey )
 
     if( !! interactive ){
 

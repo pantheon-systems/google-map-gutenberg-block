@@ -88,7 +88,8 @@ export default class EditorBlock extends Component {
         const keyInput = (
             <div>
                 <p style={{textAlign: 'center'}}>
-                    {__( 'A Google Maps API key is required, please enter one below.')  }
+                    {__( 'A Google Maps API key is required, please enter one below.')  }<br />
+                    {__( 'Note: changing the API key effects all Google Map Embed blocks.')  }
                 </p>
                 <TextControl
                     key="api-input"
@@ -99,7 +100,7 @@ export default class EditorBlock extends Component {
                     {__('Need an API key? Get one')}&nbsp;
                     <a href="https://console.developers.google.com/flows/enableapi?apiid=maps_backend,static_maps_backend,maps_embed_backend&keyType=CLIENT_SIDE&reusekey=true">
                         {__('here.')}
-                    </a><br />
+                    </a><br /><br />
                     <Button 
                         isPrimary 
                         onClick={ this.saveApiKey }
@@ -123,7 +124,6 @@ export default class EditorBlock extends Component {
         return [
 			!! focus && (
                 <InspectorControls>
-                    {keyInput}
                     {!! interactive ? (
                         <SelectControl
                             label={ __( 'Aspect Ratio' ) } 
@@ -172,6 +172,7 @@ export default class EditorBlock extends Component {
                             />
                         </div>
                     ) : null}
+                    {keyInput}
                 </InspectorControls>
             ),
             ( <TextControl 

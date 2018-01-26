@@ -30,8 +30,6 @@ To obtain an API key follow these steps:
 1. Enter the API key into the plugin settings
 1. Clear full page caching, if necessary
 
-![Google Map Gutenberg Block API Setting](./assets/images/screenshot-2.png)
-
 Note: The API key will be exposed publicly to generate the map. It is important to [restrict your API key](https://developers.google.com/maps/documentation/embed/get-api-key#key-restrictions) so others do not abuse it. The API key will be used, and displayed, in both the WordPress editor and the front end of the site.
 
 ## Use

@@ -56,7 +56,6 @@ Once you have saved an API key into the plugin settings simply enter a location,
 == Screenshots ==
  
 1. Animated `GIF` showing a demo of the plugin
-2. Screenshot showing where to add the Googe Map embed API key
  
 == Changelog ==
  

@@ -14,6 +14,11 @@ const { InspectorControls } = wp.blocks;
 const { TextControl, ToggleControl, RangeControl, SelectControl } = InspectorControls;
 const { Component } = wp.element;
 
+let settings;
+wp.api.loadPromise.then( () => {
+	settings = new wp.api.models.Settings();
+});
+
 export default class EditorBlock extends Component {
     constructor() {
         super( ...arguments );
@@ -28,8 +33,12 @@ export default class EditorBlock extends Component {
             keySaved: false,
         };
 
-        const model = new wp.api.models.Settings();
-        model.fetch().then( response => {
+        settings.on( 'change:pantheon_google_map_block_api_key', (model) => {
+            const apiKey = model.get('pantheon_google_map_block_api_key');
+            this.setState({ apiKey: settings.get( 'pantheon_google_map_block_api_key' ), isSavedKey: (apiKey === '' ) ? false : true  });
+        });
+
+        settings.fetch().then( response => {
             this.setState({ apiKey: response.pantheon_google_map_block_api_key });
             if ( this.state.apiKey && this.state.apiKey !== '' ) {
                 this.setState({ isSavedKey: true });
@@ -43,6 +52,7 @@ export default class EditorBlock extends Component {
         const model = new wp.api.models.Settings({ pantheon_google_map_block_api_key: this.state.apiKey });
         model.save().then( response => {
             this.setState({ isSavedKey: true, isLoading: false, isSaving: false, keySaved: true });
+            settings.fetch();
         });
     }
 

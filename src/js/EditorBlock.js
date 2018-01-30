@@ -95,6 +95,8 @@ export default class EditorBlock extends Component {
                     key="api-input"
                     value={ this.state.apiKey }
                     onChange={ value => this.setState({ apiKey: value }) }
+                    style={{textAlign: 'center', border: 'solid 1px rgba(100,100,100,0.25)'}}
+                    placeholder={ __('API Key') }
                 />
                 <p style={{textAlign: 'center', paddingBottom: '1em'}}>
                     {__('Need an API key? Get one')}&nbsp;
@@ -177,10 +179,11 @@ export default class EditorBlock extends Component {
             ),
             ( <TextControl 
                 key="location-input"
-                style={{padding: '0.5em', textAlign: 'center', border: 'solid 1px rgba(100,100,100,0.25)', margin: editorPadding}}
+                style={{textAlign: 'center', border: 'solid 1px rgba(100,100,100,0.25)'}}
                 onChange={ ( value ) => setAttributes( { location: value } ) } 
                 value={location}
-                placeholder={ __('Enter a location...') }
+                placeholder={  __('Enter a location...') }
+                label={ ( location === '' || ! location.length ) ? __('Location') : null }
             /> ),
             ( location === '' || ! location.length ) ? (
                 <div className={`${className} error`} style={{padding: editorPadding}}>

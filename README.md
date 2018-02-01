@@ -36,3 +36,20 @@ Note: The API key will be exposed publicly to generate the map. It is important 
 Once you have saved an API key into the plugin settings simply enter a location, such as New York, NY, or a full address. You may also choose the map width, height, zoom level and toggle between an interactive map or a static image in the block settings, which are visible in the right-hand sidebar when the block is selected.
 
 ![Google Map Gutenberg Block Demo](./assets/images/screenshot-1.gif)
+
+
+## Changelog
+
+### `1.1.0`
+* Dynamic block
+* API Key entered directly in the block
+* Removes plugin settings page
+    - Closes #3 
+    - Closes #4
+* API key setting synced in global state between all blocks.
+* Updated README with new API instructions
+    - Includes Google Developer flow link for API key
+* Use WordPress core settings REST API endpoint instead of a custom endpoint
+
+### `1.0.0`
+* Initial release

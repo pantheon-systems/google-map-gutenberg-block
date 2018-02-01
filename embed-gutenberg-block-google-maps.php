@@ -4,7 +4,7 @@
  * Description: A plugin enabling a Google Map embed Gutenberg block
  * Author: Pantheon, Andrew Taylor
  * Author URI: https://pantheon.io/
- * Version: 1.0.0
+ * Version: 1.1.0
  * License: GPL2+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: pantheon-google-map-block
@@ -57,191 +57,125 @@ function blockScripts()
 // Hook scripts function into block editor hook
 add_action('enqueue_block_assets', __NAMESPACE__ . '\\blockScripts');
 
-/**
- * Setup Pantheon Google Map Gutenberg Block Settings Page
- */
-class SettingsPage
-{
-
-    private $_options;
-
-    /**
-     * Add actions and filters
-     */
-    public function __construct()
-    {
-        add_action('admin_menu', array($this, 'addOptionsPage'));
-        add_action('admin_init', array($this, 'pageInit'));
-    }
-
-    /**
-     * Add options pge
-     *
-     * @return void
-     */
-    public function addOptionsPage()
-    {
-        add_options_page(
-            __('Google Map Block Global Settings'),
-            __('Google Map Block'),
-            'manage_options',
-            'pantheon-google-map-block',
-            array($this, 'createAdminPage')
-        );
-    }
-
-    /**
-     * Create admin page
-     *
-     * @return void
-     */
-    public function createAdminPage()
-    {
-
-    $this->_options = get_option('pantheon_google_map_block_options'); ?>
-
-    <div class="wrap">
-
-        <?php screen_icon(); ?>
-
-        <h2>
-        <?php _e('Pantheon Google Map Block Global Settings'); ?>
-        </h2>
-
-        <form method="post" action="options.php">
-
-            <?php
-            settings_fields('pantheon_google_map_block_options_group');
-            do_settings_sections('pantheon-google-map-block');
-            submit_button();
-            ?>
-
-        </form>
-
-    </div>
-
-    <?php
-    }
-
-    /**
-     * Initialize options page
-     *
-     * @return void
-     */
-    public function pageInit()
-    {
-        register_setting(
-            'pantheon_google_map_block_options_group',
-            'pantheon_google_map_block_options',
-            array($this, 'sanitize')
-        );
-
-        add_settings_section(
-            'pantheon_google_map_block',
-            '', // string that prints out a header
-            array($this, 'printSectionInfo'),
-            'pantheon-google-map-block'
-        );
-
-        add_settings_field(
-            'api_key',
-            __('Google Maps API key'),
-            array($this, 'apiInputCallback'),
-            'pantheon-google-map-block',
-            'pantheon_google_map_block'
-        );
-    }
-
-    /**
-     * Sanitize input
-     *
-     * @param array $input
-     * @return void
-     */
-    public function sanitize($input)
-    {
-        $new_input = array();
-
-        if (isset($input['api_key'])){
-            $new_input['api_key'] = sanitize_text_field($input['api_key']);
-        }
-
-        return $new_input;
-    }
-
-    /**
-     * Print section info
-     *
-     * @return void
-     */
-    public function printSectionInfo()
-    {
-        print ''; // prints a <p> kinda deal
-    }
-
-    /**
-     * API Key Input Callback
-     *
-     * @return void
-     */
-    public function apiInputCallback()
-    {
-        printf(
-            '<input type="text" id="api_key" name="pantheon_google_map_block_options[api_key]" style="%s" value="%s" />
-            <p class="description">The Google Map will not work without an API key. You can obtain one <a href="https://developers.google.com/maps/documentation/embed/get-api-key">here</a>. <br />
-            The API key will be exposed publicly to generate the map. It is important to <a href="https://developers.google.com/maps/documentation/embed/get-api-key#key-restrictions">restrict your API key</a> so others do not abuse it.
-            </p>
-            ',
-            'width:100%;max-width:500px;',
-            isset($this->_options['api_key']) ? esc_attr($this->_options['api_key']) : ''
-        );
-    }
-
-}
-
-if (is_admin()) {
-    $pantheon_google_map_block_settings_page = new SettingsPage();
-}
-
-add_action( 'rest_api_init', __NAMESPACE__ . '\\registerAPIhooks' );
-
-/**
- * Register WordPress REST API endpoint for Google Map Block
- *
- * @return void
- */
-function registerAPIhooks() {
-
-    register_rest_route( 'pantheon-google-map-block/v1', 'options', array(
+function registerSettings() {
+    register_setting(
+        'pantheon_google_map_block_api_key',
+        'pantheon_google_map_block_api_key',
         array(
-            'methods' => 'GET',
-            'callback' => __NAMESPACE__ . '\\returnGoogleMapBlockOptions',
-        ),
-    ) );
-
+            'type' => 'string',
+            'description' => __('Google Map API key for the Gutenberg block plugin.'),
+            'sanitize_callback' => 'sanitize_text_field',
+            'show_in_rest' => true,
+            'default' => ''
+        )
+    );
 }
 
+add_action( 'init', __NAMESPACE__ . '\\registerSettings'  );
+
 /**
- * Return plugin options for Google Map Block
+ * Render the Googe Map block
  *
- * @return array
+ * @param array $attributes
+ * @return string
  */
-function returnGoogleMapBlockOptions() {
-
+function renderGutenbergMapEmbedblock( $attributes ) {
+    
+    // Get the plugin settings
     $global_block_settings = get_option('pantheon_google_map_block_options');
-
     if( null === $global_block_settings ){
         $global_block_settings = array();
     }
-
-    if (!isset($global_block_settings['api_key'])) {
-        $global_block_settings['api_key'] = '';
+    
+    // Don't output anything if there is no API key
+    if (!isset($global_block_settings['api_key']) || empty( $global_block_settings['api_key'] )) {
+        return;
     }
 
-     return array(
-        'rest_url' => esc_url(rest_url()),
-        'settings' => $global_block_settings,
-        'settings_url' => admin_url('options-general.php?page=pantheon-google-map-block'),
-    );
+    // Stash the API key
+    $APIkey = $global_block_settings['api_key'];
+    // Exapnd all the atributes into separate variables
+    foreach($attributes as $key=>$value) {
+        ${$key} = $value; 
+    }
 
+    // URL encode the location for Google Maps
+    $location = urlencode ( $location );
+
+    // Set the API url based to embed or static maps based on the interactive setting
+    $apiURL = ( $interactive ) ? "https://www.google.com/maps/embed/v1/place?key=${APIkey}&q=${location}&zoom=${zoom}&maptype=${mapType}" : "https://maps.googleapis.com/maps/api/staticmap?center=$location&zoom=${zoom}&size=${maxWidth}x${maxHeight}&maptype=${mapType}&key=${APIkey}";
+    
+    // Check status code of apiURL
+    $ch = curl_init($apiURL);
+    curl_setopt($ch, CURLOPT_HEADER, true);
+    curl_setopt($ch, CURLOPT_NOBODY, true);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($ch, CURLOPT_TIMEOUT,10);
+    $output = curl_exec($ch);
+    $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    // Don't output anything if the response from Google Maps isn't a 200
+    if( $httpcode !== 200 ){
+        return;
+    }
+
+    // Set the appropriate CSS class names
+    $classNames = ( $interactive ) ? "wp-block-pantheon-google-map interactive ratio$aspectRatio" : "wp-block-pantheon-google-map";
+    
+    // Create the output
+    $output = "<div class='$classNames'><div class='map'>";
+    // If the map is interactive show the iframe
+    if( $interactive ){
+        $output .= "<iframe width='100%' height='100%' frameborder='0' style='border:0' src='$apiURL' allowfullscreen></iframe>";
+    // Otherwise use the static API
+    } else {
+        $output .= "<img src='$apiURL' />";
+    }
+    $output .= '</div></div>';
+
+    // Return the output
+    return $output;
 }
+
+/**
+ * Register the map block
+ *
+ * @return void
+ */
+function registerMapBlock() {
+    \register_block_type( 'pantheon/google-map', array(
+        'attributes' => array (
+            'location' => array (
+                'type' => 'string',
+                'default' => '',
+            ),
+            'mapType' => array (
+                'type' => 'string',
+                'default' => 'roadmap',
+            ),
+            'zoom' => array (
+                'type' => 'number',
+                'default' => 13,
+            ),
+            'maxWidth' => array (
+                'type' => 'number',
+                'default' => 1920,
+            ),
+            'maxHeight' => array (
+                'type' => 'number',
+                'default' => 1329,
+            ),
+            'interactive' => array (
+                'type' => 'boolean',
+                'default' => true,
+            ),
+            'aspectRatio' => array (
+                'type' => 'string',
+                'default' => '2_1',
+            ),
+        ),
+        'render_callback' => __NAMESPACE__ . '\\renderGutenbergMapEmbedblock',
+    ) );
+}
+add_action('init', __NAMESPACE__ . '\\registerMapBlock' );

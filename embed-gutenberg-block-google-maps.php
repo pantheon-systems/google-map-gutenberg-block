@@ -144,38 +144,40 @@ function renderGutenbergMapEmbedblock( $attributes ) {
  * @return void
  */
 function registerMapBlock() {
-    \register_block_type( 'pantheon/google-map', array(
-        'attributes' => array (
-            'location' => array (
-                'type' => 'string',
-                'default' => '',
+    if( \function_exists('register_block_type') ){
+        \register_block_type( 'pantheon/google-map', array(
+            'attributes' => array (
+                'location' => array (
+                    'type' => 'string',
+                    'default' => '',
+                ),
+                'mapType' => array (
+                    'type' => 'string',
+                    'default' => 'roadmap',
+                ),
+                'zoom' => array (
+                    'type' => 'number',
+                    'default' => 13,
+                ),
+                'maxWidth' => array (
+                    'type' => 'number',
+                    'default' => 1920,
+                ),
+                'maxHeight' => array (
+                    'type' => 'number',
+                    'default' => 1329,
+                ),
+                'interactive' => array (
+                    'type' => 'boolean',
+                    'default' => true,
+                ),
+                'aspectRatio' => array (
+                    'type' => 'string',
+                    'default' => '2_1',
+                ),
             ),
-            'mapType' => array (
-                'type' => 'string',
-                'default' => 'roadmap',
-            ),
-            'zoom' => array (
-                'type' => 'number',
-                'default' => 13,
-            ),
-            'maxWidth' => array (
-                'type' => 'number',
-                'default' => 1920,
-            ),
-            'maxHeight' => array (
-                'type' => 'number',
-                'default' => 1329,
-            ),
-            'interactive' => array (
-                'type' => 'boolean',
-                'default' => true,
-            ),
-            'aspectRatio' => array (
-                'type' => 'string',
-                'default' => '2_1',
-            ),
-        ),
-        'render_callback' => __NAMESPACE__ . '\\renderGutenbergMapEmbedblock',
-    ) );
+            'render_callback' => __NAMESPACE__ . '\\renderGutenbergMapEmbedblock',
+        ) );
+    }
 }
 add_action('init', __NAMESPACE__ . '\\registerMapBlock' );

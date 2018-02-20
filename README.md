@@ -40,12 +40,14 @@ Once you have saved an API key into the plugin settings simply enter a location,
 
 ## Changelog
 
+### `1.1.1`
+* Import controls from `wp.components` instead of `wp.blocks.InspectorControls`
+* Bump tested up to from `4.9.2` to `4.9.4`
+
 ### `1.1.0`
 * Dynamic block
 * API Key entered directly in the block
 * Removes plugin settings page
-    - Closes #3 
-    - Closes #4
 * API key setting synced in global state between all blocks.
 * Updated README with new API instructions
     - Includes Google Developer flow link for API key

@@ -10,8 +10,7 @@ import getMapHTML from './getMapHTML.js'
  */
 const { __ } = wp.i18n;
 const { Button } = wp.components;
-const { InspectorControls } = wp.blocks;
-const { TextControl, ToggleControl, RangeControl, SelectControl } = InspectorControls;
+const { TextControl, ToggleControl, RangeControl, SelectControl } = wp.components;
 const { Component } = wp.element;
 
 let settings;

@@ -23,7 +23,7 @@ registerBlockType( 'pantheon/google-map', {
     description: __( 'This block creates either an interactive Google map or an image. Simply enter text for a location above the map and adjust advanced settings below.' ),
 	icon: blockIcons.googleMap,
 	category: 'embed',
-	supports: {html: true},
+	supports: {html: false},
 	edit: EditorBlock,
     save() { return null }
 });

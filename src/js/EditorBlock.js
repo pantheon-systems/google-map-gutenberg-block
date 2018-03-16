@@ -56,7 +56,7 @@ export default class EditorBlock extends Component {
     }
 
     render() {
-        const { attributes, className, focus, setAttributes, setFocus } = this.props;
+        const { attributes, className, isSelected, setAttributes } = this.props;
         const { location, mapType, zoom, interactive, maxWidth, maxHeight, aspectRatio } = attributes;
         const editorPadding = '0 1em';
         const classNames = ( ! interactive ) ? `${className} ratio${aspectRatio}` : `${className}  ratio${aspectRatio} interactive`;
@@ -123,7 +123,7 @@ export default class EditorBlock extends Component {
         }
 
         return [
-			!! focus && (
+			!! isSelected && (
                 <InspectorControls>
                     {!! interactive ? (
                         <SelectControl

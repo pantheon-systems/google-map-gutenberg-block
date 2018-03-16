@@ -22,40 +22,37 @@ if (! defined('ABSPATH')) {
 }
 
 /**
- * Enqueue block editor JavaScript and CSS
+ * Register block editor JavaScript and CSS
  * 
  * @return void
  */
 function blockScripts()
 {
-    $blockPath = 'assets/js/index.min.js';
     // Make paths variables so we don't write em twice ;)
+    $blockPath = 'assets/js/index.min.js';
     $stylePath = 'assets/css/style.min.css';
 
-    // Enqueue the bundled block JS file
+    // Registerthe bundled block JS file
     if (file_exists(plugin_dir_path(__FILE__) . $blockPath)) {
-        wp_enqueue_script(
-            'pantheon-google-map-block-frontend-js',
+        wp_register_script(
+            'pantheon-google-map-block-js',
             plugins_url($blockPath, __FILE__),
-            [ 'wp-i18n', 'wp-element', 'wp-blocks', 'wp-components', 'wp-api' ],
+            array( 'wp-i18n', 'wp-element', 'wp-blocks', 'wp-components', 'wp-api' ),
             filemtime(plugin_dir_path(__FILE__) . $blockPath)
         );
     }
 
-    // Enqueue frontend and editor block styles
+    // Register frontend and editor block styles
     if (file_exists(plugin_dir_path(__FILE__) . $stylePath)) {
-        wp_enqueue_style(
+        wp_register_style(
             'pantheon-google-map-block-css',
             plugins_url($stylePath, __FILE__),
-            [ 'wp-blocks' ],
+            array( 'wp-blocks' ),
             filemtime(plugin_dir_path(__FILE__) . $stylePath)
         );
     }
 
 }
-
-// Hook scripts function into block editor hook
-add_action('enqueue_block_assets', __NAMESPACE__ . '\\blockScripts');
 
 function registerSettings() {
     register_setting(
@@ -145,7 +142,10 @@ function renderGutenbergMapEmbedblock( $attributes ) {
  */
 function registerMapBlock() {
     if( \function_exists('register_block_type') ){
+        blockScripts();
         \register_block_type( 'pantheon/google-map', array(
+            'editor_script' => 'pantheon-google-map-block-js',
+            'style' => 'pantheon-google-map-block-css',
             'attributes' => array (
                 'location' => array (
                     'type' => 'string',
@@ -180,4 +180,6 @@ function registerMapBlock() {
         ) );
     }
 }
+
+
 add_action('init', __NAMESPACE__ . '\\registerMapBlock' );

@@ -61,6 +61,8 @@ Once you have saved an API key into the plugin settings simply enter a location,
 
 = 1.1.2 =
 * Enqueue block scripts/styles automatically using `register_block_type`
+* Change `focus` to `isSelected`
+* Disallow HTML editing of block source
 
 = 1.1.1 =
 * Import controls from `wp.components` instead of `wp.blocks.InspectorControls`

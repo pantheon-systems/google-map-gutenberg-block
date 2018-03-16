@@ -40,6 +40,9 @@ Once you have saved an API key into the plugin settings simply enter a location,
 
 ## Changelog
 
+### `1.1.2`
+* Enqueue block scripts/styles automatically using `register_block_type`
+
 ### `1.1.1`
 * Import controls from `wp.components` instead of `wp.blocks.InspectorControls`
 * Bump tested up to from `4.9.2` to `4.9.4`

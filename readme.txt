@@ -4,7 +4,7 @@ Tags: map, gutenberg, google, embed
 Author URI: https://pantheon.io/
 Plugin URI: https://github.com/pantheon-systems/google-map-gutenberg-block
 Requires at least: 4.8
-Tested up to: 4.9.4
+Tested up to: 4.9.5
 Requires PHP: 5.6
 Stable tag: 1.1.2
 License: GPLv2 or later
@@ -66,7 +66,7 @@ Once you have saved an API key into the plugin settings simply enter a location,
 
 = 1.1.1 =
 * Import controls from `wp.components` instead of `wp.blocks.InspectorControls`
-* Bump tested up to from `4.9.2` to `4.9.4`
+* Bump tested up to from `4.9.2` to `4.9.5`
  
 = 1.1.0 =
 * Dynamic block

@@ -4,7 +4,7 @@
  * Description: A plugin enabling a Google Map embed Gutenberg block
  * Author: Pantheon, Andrew Taylor
  * Author URI: https://pantheon.io/
- * Version: 1.1.2
+ * Version: 1.2
  * License: GPL2+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: pantheon-google-map-block
@@ -29,10 +29,10 @@ if (! defined('ABSPATH')) {
 function blockScripts()
 {
     // Make paths variables so we don't write em twice ;)
-    $blockPath = 'assets/js/index.min.js';
-    $stylePath = 'assets/css/style.min.css';
+    $blockPath = 'dist/blocks.build.js';
+    $stylePath = 'dist/blocks.style.build.css';
 
-    // Registerthe bundled block JS file
+    // Register the bundled block JS file
     if (file_exists(plugin_dir_path(__FILE__) . $blockPath)) {
         wp_register_script(
             'pantheon-google-map-block-js',

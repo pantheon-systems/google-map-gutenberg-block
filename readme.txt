@@ -6,7 +6,7 @@ Plugin URI: https://github.com/pantheon-systems/google-map-gutenberg-block
 Requires at least: 4.8
 Tested up to: 4.9.5
 Requires PHP: 5.6
-Stable tag: 1.1.2
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
@@ -58,6 +58,10 @@ Once you have saved an API key into the plugin settings simply enter a location,
 1. Animated `GIF` showing a demo of the plugin
  
 == Changelog ==
+
+= 1.2 =
+* Use [`create-guten-block`](https://github.com/ahmadawais/create-guten-block) for building assets.
+    - Prior build process has dependencies that used a version of `hoek` [which had a vulnerability](https://nvd.nist.gov/vuln/detail/CVE-2018-3728)
 
 = 1.1.2 =
 * Enqueue block scripts/styles automatically using `register_block_type`

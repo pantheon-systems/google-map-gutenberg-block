@@ -1,7 +1,7 @@
 /**
  * Import internal dependencies
  */
-import '../css/style.scss'
+import '../css/style.css'
 import blockIcons from './icons.js'
 import getMapHTML from './getMapHTML.js'
 

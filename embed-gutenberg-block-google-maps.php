@@ -29,8 +29,8 @@ if (! defined('ABSPATH')) {
 function blockScripts()
 {
     // Make paths variables so we don't write em twice ;)
-    $blockPath = 'assets/js/index.min.js';
-    $stylePath = 'assets/css/style.min.css';
+    $blockPath = 'assets/js/index.a363cb77058a2adc06e1.js';
+    $stylePath = 'assets/css/style.a363cb77058a2adc06e1.css';
 
     // Registerthe bundled block JS file
     if (file_exists(plugin_dir_path(__FILE__) . $blockPath)) {

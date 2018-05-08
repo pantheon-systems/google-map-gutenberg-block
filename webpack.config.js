@@ -1,11 +1,9 @@
 const path = require('path');
-const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
-// Set different CSS extraction for editor only and common block styles
-const blocksCSSPlugin = new ExtractTextPlugin({
-    filename: './assets/css/style.min.css',
-});
+const devMode = (process.argv.slice().pop() !== 'production');
 
 // Configuration for the ExtractTextPlugin.
 const extractConfig = {
@@ -16,12 +14,6 @@ const extractConfig = {
             loader: 'postcss-loader',
             options: {
                 plugins: [require('autoprefixer')],
-            },
-        },
-        {
-            loader: 'sass-loader',
-            query: {
-                outputStyle: 'production' === process.env.NODE_ENV ? 'compressed' : 'nested',
             },
         },
     ],
@@ -38,25 +30,39 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname),
-        filename: '[name].min.js',
+        filename: devMode ? '[name].js' : '[name].[chunkhash].js',
     },
-    watch: true,
-    devtool: 'cheap-eval-source-map',
+    watch: devMode,
+    optimization: {
+        minimizer: [
+          new UglifyJsPlugin({
+            cache: true,
+            parallel: true,
+            sourceMap: devMode
+          }),
+          new OptimizeCSSAssetsPlugin({})
+        ]
+    },
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: devMode ? './assets/css/style.css' : './assets/css/style.[chunkhash].css'
+        })
+    ],
     module: {
         rules: [{
-                test: /\.js$/,
+                test: /\.jsx?$/,
                 exclude: /(node_modules|bower_components)/,
                 use: {
                     loader: 'babel-loader',
+                    options: {  
+                        cacheDirectory: true  
+                    }
                 },
             },
             {
                 test: /style\.s?css$/,
-                use: blocksCSSPlugin.extract(extractConfig),
+                use: [ MiniCssExtractPlugin.loader, 'css-loader' ]
             },
         ],
-    },
-    plugins: [
-        blocksCSSPlugin
-    ],
+    }
 };

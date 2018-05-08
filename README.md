@@ -40,7 +40,10 @@ Once you have saved an API key into the plugin settings simply enter a location,
 
 ## Changelog
 
-= 1.2 =
+### `1.3`
+* Upgrade to webpack 4
+
+### `1.2`
 * Use [`create-guten-block`](https://github.com/ahmadawais/create-guten-block) for building assets.
     - Prior build process has dependencies that used a version of `hoek` [which had a vulnerability](https://nvd.nist.gov/vuln/detail/CVE-2018-3728)
 

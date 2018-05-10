@@ -40,6 +40,9 @@ Once you have saved an API key into the plugin settings simply enter a location,
 
 ## Changelog
 
+### `1.3.1`
+* Fix a bug retrieving API key from the database causing the map to not display on the frontend
+
 ### `1.3`
 * Upgrade to webpack 4
 

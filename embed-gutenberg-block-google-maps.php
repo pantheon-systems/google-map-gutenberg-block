@@ -78,19 +78,14 @@ add_action( 'init', __NAMESPACE__ . '\\registerSettings'  );
  */
 function renderGutenbergMapEmbedblock( $attributes ) {
     
-    // Get the plugin settings
-    $global_block_settings = get_option('pantheon_google_map_block_options');
-    if( null === $global_block_settings ){
-        $global_block_settings = array();
-    }
-    
+    // Get the API key
+    $APIkey = get_option('pantheon_google_map_block_api_key');
+
     // Don't output anything if there is no API key
-    if (!isset($global_block_settings['api_key']) || empty( $global_block_settings['api_key'] )) {
+    if (null === $APIkey || empty( $APIkey )) {
         return;
     }
 
-    // Stash the API key
-    $APIkey = $global_block_settings['api_key'];
     // Exapnd all the atributes into separate variables
     foreach($attributes as $key=>$value) {
         ${$key} = $value; 
@@ -100,7 +95,7 @@ function renderGutenbergMapEmbedblock( $attributes ) {
     $location = urlencode ( $location );
 
     // Set the API url based to embed or static maps based on the interactive setting
-    $apiURL = ( $interactive ) ? "https://www.google.com/maps/embed/v1/place?key=${APIkey}&q=${location}&zoom=${zoom}&maptype=${mapType}" : "https://maps.googleapis.com/maps/api/staticmap?center=$location&zoom=${zoom}&size=${maxWidth}x${maxHeight}&maptype=${mapType}&key=${APIkey}";
+    $apiURL = ( $interactive ) ? "https://www.google.com/maps/embed/v1/place?key=${APIkey}&q=${location}&zoom=${zoom}&maptype=${mapType}" : "https://maps.googleapis.com/maps/api/staticmap?center=${location}&zoom=${zoom}&size=${maxWidth}x${maxHeight}&maptype=${mapType}&key=${APIkey}";
     
     // Check status code of apiURL
     $ch = curl_init($apiURL);

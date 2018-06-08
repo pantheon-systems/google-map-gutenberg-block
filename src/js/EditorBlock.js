@@ -9,7 +9,7 @@ import getMapHTML from './getMapHTML.js'
  * Get WordPress libraries from the wp global
  */
 const { __ } = wp.i18n;
-const { InspectorControls } = wp.blocks;
+const { InspectorControls } = wp.editor;
 const { Button, TextControl, ToggleControl, RangeControl, SelectControl } = wp.components;
 const { Component } = wp.element;
 

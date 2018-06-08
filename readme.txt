@@ -1,12 +1,12 @@
 === Gutenberg Block For Google Maps Embed By Pantheon ===
 Contributors: andrew.taylor
-Tags: map, gutenberg, google, embed
+Tags: map, gutenberg, google, embed, block
 Author URI: https://pantheon.io/
 Plugin URI: https://github.com/pantheon-systems/google-map-gutenberg-block
 Requires at least: 4.8
-Tested up to: 4.9.5
+Tested up to: 4.9.6
 Requires PHP: 5.6
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
@@ -15,6 +15,8 @@ This plugin provides a Google Maps embed block for the Gutenberg editor.
 == Description ==
  
 This plugin provides a Google Maps embed block for the [Gutenberg WordPress editor](https://github.com/WordPress/gutenberg).
+
+This plugin **requires** either [the Gutenberg plugin](https://wordpress.org/plugins/gutenberg/) version `3.0.1` or greater or WordPress `5.0` or greater.
  
 == Installation ==
  
@@ -45,8 +47,6 @@ To obtain an API key follow these steps:
 1. Enter the API key into the plugin settings
 1. Clear full page caching, if necessary
 
-![Google Map Gutenberg Block API Setting](./assets/images/screenshot-2.png)
-
 Note: The API key will be exposed publicly to generate the map. It is important to [restrict your API key](https://developers.google.com/maps/documentation/embed/get-api-key#key-restrictions) so others do not abuse it. The API key will be used, and displayed, in both the WordPress editor and the front end of the site.
 
 == Use ==
@@ -58,6 +58,9 @@ Once you have saved an API key into the plugin settings simply enter a location,
 1. Animated `GIF` showing a demo of the plugin
  
 == Changelog ==
+
+= 1.3.2 =
+Use `InspectorControls` in `wp.editor` rather than `wp.blocks` as it will be deprecated in Gutenberg `3.1`
 
 = 1.3.1 =
 Fix a bug retrieving API key from the database causing the map to not display on the frontend

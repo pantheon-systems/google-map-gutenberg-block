@@ -1,9 +1,9 @@
 /**
  * Import internal dependencies
  */
-import '../css/style.css'
-import blockIcons from './icons.js'
-import getMapHTML from './getMapHTML.js'
+import '../css/style.css';
+import blockIcons from './icons.js';
+import getMapHTML from './getMapHTML.js';
 
 /**
  * Get WordPress libraries from the wp global

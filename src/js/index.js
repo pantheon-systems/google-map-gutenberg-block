@@ -1,9 +1,9 @@
 /**
  * Import internal dependencies
  */
-import '../css/style.css'
-import blockIcons from './icons.js'
-import EditorBlock from './EditorBlock.js'
+import '../css/style.css';
+import blockIcons from './icons.js';
+import EditorBlock from './EditorBlock.js';
 
 /**
  * Get WordPress libraries from the wp global
@@ -25,5 +25,5 @@ registerBlockType( 'pantheon/google-map', {
 	category: 'embed',
 	supports: {html: false},
 	edit: EditorBlock,
-    save() { return null }
+    save() { return null; }
 });

@@ -2,6 +2,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 
 const devMode = (process.argv.slice().pop() !== 'production');
 
@@ -26,10 +27,10 @@ module.exports = {
         tls: 'empty'
     },
     entry: {
-        './assets/js/index': './src/js/index.js',
+        'js/index': './src/js/index.js',
     },
     output: {
-        path: path.resolve(__dirname),
+        path: path.resolve(__dirname) + '/assets/',
         filename: devMode ? '[name].js' : '[name].[chunkhash].js',
     },
     watch: devMode,
@@ -45,7 +46,10 @@ module.exports = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: devMode ? './assets/css/style.css' : './assets/css/style.[chunkhash].css'
+            filename: devMode ? 'css/style.css' : 'css/style.[chunkhash].css'
+        }),
+        new WebpackCleanupPlugin({
+            exclude: ['images/**/*'],
         })
     ],
     module: {

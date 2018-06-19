@@ -29,9 +29,9 @@ if (! defined('ABSPATH')) {
 function blockScripts()
 {
     // Make paths variables so we don't write em twice ;)
-    $hash = 'b9c875fd42be56b52bc3';
-    $blockPath = "assets/js/index.$hash.js";
-    $stylePath = "assets/css/style.$hash.css";
+    $hash = '.8cebc8e7edf5e9177f43';
+    $blockPath = "assets/js/index$hash.js";
+    $stylePath = "assets/css/style$hash.css";
 
     // Register the bundled block JS file.
     if (file_exists(plugin_dir_path(__FILE__) . $blockPath)) {

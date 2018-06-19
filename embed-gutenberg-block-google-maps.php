@@ -138,9 +138,9 @@ function render_gutenberg_map_embed_block( $attributes ) {
  * @return void
  */
 function register_map_block() {
-	if ( \function_exists( 'register_block_type' ) ) {
+	if ( function_exists( 'register_block_type' ) ) {
 		block_scripts();
-		\register_block_type(
+		register_block_type(
 			'pantheon/google-map', array(
 				'editor_script'   => 'pantheon-google-map-block-js',
 				'style'           => 'pantheon-google-map-block-css',

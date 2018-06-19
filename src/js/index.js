@@ -20,10 +20,12 @@ const { registerBlockType } = wp.blocks;
  */
 registerBlockType( 'pantheon/google-map', {
 	title: __( 'Google Map' ),
-    description: __( 'This block creates either an interactive Google map or an image. Simply enter text for a location above the map and adjust advanced settings below.' ),
+	description: __( 'This block creates either an interactive Google map or an image. Simply enter text for a location above the map and adjust advanced settings below.' ),
 	icon: blockIcons.googleMap,
 	category: 'embed',
-	supports: {html: false},
+	supports: { html: false },
 	edit: EditorBlock,
-    save() { return null; }
-});
+	save() {
+		return null;
+	},
+} );

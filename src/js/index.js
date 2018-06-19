@@ -1,12 +1,12 @@
 /**
- * Import internal dependencies
+ * Import internal dependencies.
  */
 import '../css/style.css';
 import blockIcons from './icons.js';
 import EditorBlock from './EditorBlock.js';
 
 /**
- * Get WordPress libraries from the wp global
+ * Get WordPress libraries from the wp global.
  */
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
@@ -14,8 +14,8 @@ const { registerBlockType } = wp.blocks;
 /**
  * Register Block.
  *
- * @param  {string}   name     Block name.
- * @param  {Object}   settings Block settings.
+ * @param  {string}  name     Block name.
+ * @param  {Object}  settings Block settings.
  * @return {WPBlock} The block, if it has been successfully registered; otherwise `undefined`.
  */
 registerBlockType( 'pantheon/google-map', {

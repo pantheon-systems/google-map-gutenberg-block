@@ -22,8 +22,8 @@ if (! defined('ABSPATH')) {
 }
 
 /**
- * Register block editor JavaScript and CSS
- * 
+ * Register block editor JavaScript and CSS.
+ *
  * @return void
  */
 function blockScripts()
@@ -33,7 +33,7 @@ function blockScripts()
     $blockPath = "assets/js/index.$hash.js";
     $stylePath = "assets/css/style.$hash.css";
 
-    // Register the bundled block JS file
+    // Register the bundled block JS file.
     if (file_exists(plugin_dir_path(__FILE__) . $blockPath)) {
         wp_register_script(
             'pantheon-google-map-block-js',
@@ -43,7 +43,7 @@ function blockScripts()
         );
     }
 
-    // Register frontend and editor block styles
+    // Register frontend and editor block styles.
     if (file_exists(plugin_dir_path(__FILE__) . $stylePath)) {
         wp_register_style(
             'pantheon-google-map-block-css',
@@ -72,33 +72,33 @@ function registerSettings() {
 add_action( 'init', __NAMESPACE__ . '\\registerSettings'  );
 
 /**
- * Render the Googe Map block
+ * Render the Google Map block.
  *
- * @param array $attributes
- * @return string
+ * @param array $attributes An array of block attributes and values.
+ * @return string The rendered HTML output of the block.
  */
 function renderGutenbergMapEmbedblock( $attributes ) {
-    
-    // Get the API key
+
+    // Get the API key.
     $APIkey = get_option('pantheon_google_map_block_api_key');
 
-    // Don't output anything if there is no API key
+    // Don't output anything if there is no API key.
     if (null === $APIkey || empty( $APIkey )) {
         return;
     }
 
-    // Exapnd all the atributes into separate variables
+    // Expand all the attributes into separate variables.
     foreach($attributes as $key=>$value) {
-        ${$key} = $value; 
+        ${$key} = $value;
     }
 
-    // URL encode the location for Google Maps
+    // URL encode the location for Google Maps.
     $location = urlencode ( $location );
 
-    // Set the API url based to embed or static maps based on the interactive setting
+    // Set the API URL based to embed or static maps based on the interactive setting.
     $apiURL = ( $interactive ) ? "https://www.google.com/maps/embed/v1/place?key=${APIkey}&q=${location}&zoom=${zoom}&maptype=${mapType}" : "https://maps.googleapis.com/maps/api/staticmap?center=${location}&zoom=${zoom}&size=${maxWidth}x${maxHeight}&maptype=${mapType}&key=${APIkey}";
-    
-    // Check status code of apiURL
+
+    // Check status code of apiURL.
     $ch = curl_init($apiURL);
     curl_setopt($ch, CURLOPT_HEADER, true);
     curl_setopt($ch, CURLOPT_NOBODY, true);
@@ -108,31 +108,31 @@ function renderGutenbergMapEmbedblock( $attributes ) {
     $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    // Don't output anything if the response from Google Maps isn't a 200
+    // Don't output anything if the response from Google Maps isn't a 200.
     if( $httpcode !== 200 ){
         return;
     }
 
-    // Set the appropriate CSS class names
+    // Set the appropriate CSS class names.
     $classNames = ( $interactive ) ? "wp-block-pantheon-google-map interactive ratio$aspectRatio" : "wp-block-pantheon-google-map";
-    
-    // Create the output
+
+    // Create the output.
     $output = "<div class='$classNames'><div class='map'>";
-    // If the map is interactive show the iframe
+    // If the map is interactive show the iframe.
     if( $interactive ){
         $output .= "<iframe width='100%' height='100%' frameborder='0' style='border:0' src='$apiURL' allowfullscreen></iframe>";
-    // Otherwise use the static API
+    // Otherwise use the static API.
     } else {
         $output .= "<img src='$apiURL' />";
     }
     $output .= '</div></div>';
 
-    // Return the output
+    // Return the output.
     return $output;
 }
 
 /**
- * Register the map block
+ * Register the map block.
  *
  * @return void
  */

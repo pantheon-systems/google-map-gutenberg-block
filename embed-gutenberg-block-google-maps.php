@@ -95,7 +95,8 @@ function render_gutenberg_map_embed_block( $attributes ) {
 	$location = rawurlencode( $location );
 
 	// Set the API URL based to embed or static maps based on the interactive setting.
-	$api_url = ( $interactive ) ? "https://www.google.com/maps/embed/v1/place?key=${api_key}&q=${location}&zoom=${zoom}&maptype=${mapType}" : "https://maps.googleapis.com/maps/api/staticmap?center=${location}&zoom=${zoom}&size=${maxWidth}x${maxHeight}&maptype=${mapType}&key=${api_key}"; /* phpcs:ignore */
+	 /* phpcs:ignore */
+	$api_url = ( $interactive ) ? "https://www.google.com/maps/embed/v1/place?key=${api_key}&q=${location}&zoom=${zoom}&maptype=${mapType}" : "https://maps.googleapis.com/maps/api/staticmap?center=${location}&zoom=${zoom}&size=${maxWidth}x${maxHeight}&maptype=${mapType}&key=${api_key}";
 
 	// Check status code of the API.
 	// phpcs:disable WordPress.WP.AlternativeFunctions
@@ -115,7 +116,8 @@ function render_gutenberg_map_embed_block( $attributes ) {
 	}
 
 	// Set the appropriate CSS class names.
-	$classes = ( $interactive ) ? "wp-block-pantheon-google-map interactive ratio$aspectRatio" : 'wp-block-pantheon-google-map'; /* phpcs:ignore */
+	 /* phpcs:ignore */
+	$classes = ( $interactive ) ? "wp-block-pantheon-google-map interactive ratio$aspectRatio" : 'wp-block-pantheon-google-map';
 
 	// Create the output.
 	$output = "<div class='" . esc_attr( $classes ) . "'><div class='map'>";

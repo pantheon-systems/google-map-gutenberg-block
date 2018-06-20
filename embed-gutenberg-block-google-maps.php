@@ -118,13 +118,13 @@ function render_gutenberg_map_embed_block( $attributes ) {
 	$classes = ( $interactive ) ? "wp-block-pantheon-google-map interactive ratio$aspectRatio" : 'wp-block-pantheon-google-map'; /* phpcs:ignore */
 
 	// Create the output.
-	$output = "<div class='$classes'><div class='map'>";
+	$output = "<div class='" . esc_attr( $classes ) . "'><div class='map'>";
 	// If the map is interactive show the iframe.
 	if ( $interactive ) {
-		$output .= "<iframe width='100%' height='100%' frameborder='0' style='border:0' src='$api_url' allowfullscreen></iframe>";
+		$output .= "<iframe width='100%' height='100%' frameborder='0' style='border:0' src='". esc_url( $api_url ) ."' allowfullscreen></iframe>";
 		// Otherwise use the static API.
 	} else {
-		$output .= "<img src='$api_url' />";
+		$output .= "<img src='" . esc_url( $api_url ) . "' />";
 	}
 	$output .= '</div></div>';
 

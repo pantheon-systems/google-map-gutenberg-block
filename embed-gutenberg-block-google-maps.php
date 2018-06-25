@@ -175,6 +175,9 @@ function register_map_block() {
 						'type'    => 'string',
 						'default' => '2_1',
 					),
+					'layout' => array(
+						'type'    => 'string',
+					),
 				),
 				'render_callback' => __NAMESPACE__ . '\\render_gutenberg_map_embed_block',
 			)

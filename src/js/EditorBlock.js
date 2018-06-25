@@ -69,7 +69,7 @@ export default class EditorBlock extends Component {
 		const editorPadding = '0 1em';
 		const classes = classnames(
 			className,
-			`ratio${aspectRatio}`,
+			`ratio${ aspectRatio }`,
 			{ 'interactive': interactive }
 		);
 
@@ -227,7 +227,7 @@ export default class EditorBlock extends Component {
 				label={ ( location === '' || ! location.length ) ? __( 'Location' ) : null }
 			/> ),
 			( location === '' || ! location.length ) ? (
-				<div className={ `${classes} error` } style={ { padding: editorPadding } }>
+				<div className={ `${ classes } error` } style={ { padding: editorPadding } }>
 					<p style={ { textAlign: 'center' } }>
 						{ __( 'A location is required. Please enter one in the field above.' ) }
 					</p>

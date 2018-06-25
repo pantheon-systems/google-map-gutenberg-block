@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function block_scripts() {
 	// Make paths variables so we don't write em twice ;)
-	$hash       = '.8cebc8e7edf5e9177f43';
+	$hash       = '.587aba0d1177036f9348';
 	$block_path = "assets/js/index$hash.js";
 	$style_path = "assets/css/style$hash.css";
 

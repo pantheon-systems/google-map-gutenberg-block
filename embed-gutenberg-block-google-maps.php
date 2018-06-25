@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function block_scripts() {
 	// Make paths variables so we don't write em twice ;)
-	$hash       = '.28b2d48c50f2cc147828';
+	$hash       = '.a6d07451a47e4a4927df';
 	$block_path = "assets/js/index$hash.js";
 	$style_path = "assets/css/style$hash.css";
 
@@ -174,6 +174,9 @@ function register_map_block() {
 					'aspectRatio' => array(
 						'type'    => 'string',
 						'default' => '2_1',
+					),
+					'layout' => array(
+						'type'    => 'string',
 					),
 				),
 				'render_callback' => __NAMESPACE__ . '\\render_gutenberg_map_embed_block',

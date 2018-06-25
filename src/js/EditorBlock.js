@@ -3,6 +3,7 @@
  */
 import '../css/style.css';
 import getMapHTML from './getMapHTML.js';
+import classnames from 'classnames';
 
 /**
  * Get WordPress libraries from the wp global.
@@ -66,7 +67,11 @@ export default class EditorBlock extends Component {
 		const { attributes, className, isSelected, setAttributes } = this.props;
 		const { location, mapType, zoom, interactive, maxWidth, maxHeight, aspectRatio } = attributes;
 		const editorPadding = '0 1em';
-		const classNames = ( ! interactive ) ? `${className} ratio${aspectRatio}` : `${className} ratio${aspectRatio} interactive`;
+		const classes = classnames(
+			className,
+			`ratio${aspectRatio}`,
+			{ 'interactive': interactive }
+		);
 
 		const linkOptions = [
 			{
@@ -104,7 +109,7 @@ export default class EditorBlock extends Component {
 
 		if ( this.state.isLoading  ) {
 			return (
-				<div className={ `${className} notice notice-warning` } style={ { padding: editorPadding } }>
+				<div className={ `${ classes } notice notice-warning` } style={ { padding: editorPadding } }>
 					<p style={ { textAlign: 'center' } }>
 						{ __( 'Loading map...' ) }
 					</p>
@@ -150,7 +155,7 @@ export default class EditorBlock extends Component {
 
 		if ( ! this.state.isSavedKey  ) {
 			return (
-				<div className={ `${className} error` } style={ { padding: editorPadding } }>
+				<div className={ `${ classes } error` } style={ { padding: editorPadding } }>
 					{keyInput}
 				</div>
 			)
@@ -222,7 +227,7 @@ export default class EditorBlock extends Component {
 				label={ ( location === '' || ! location.length ) ? __( 'Location' ) : null }
 			/> ),
 			( location === '' || ! location.length ) ? (
-				<div className={ `${className} error` } style={ { padding: editorPadding } }>
+				<div className={ `${classes} error` } style={ { padding: editorPadding } }>
 					<p style={ { textAlign: 'center' } }>
 						{ __( 'A location is required. Please enter one in the field above.' ) }
 					</p>
@@ -230,7 +235,7 @@ export default class EditorBlock extends Component {
 			) : (
 				( this.state.apiKey === '' && this.state.keySaved === false ) ?
 					keyInput
-					: ( <div className={ classNames }>
+					: ( <div className={ classes }>
 						<div className="map">
 							{ getMapHTML( attributes, this.state.apiKey ) }
 						</div>

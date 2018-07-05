@@ -128,7 +128,7 @@ function renderGutenbergMapEmbedblock( $attributes ) {
     $output .= '</div></div>';
 
     // Return the output
-    return $output;
+    return apply_filters('render_pantheon_google_map_block', $output, $attributes);
 }
 
 /**

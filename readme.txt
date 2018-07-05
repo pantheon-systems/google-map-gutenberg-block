@@ -56,8 +56,19 @@ Once you have saved an API key into the plugin settings simply enter a location,
 == Screenshots ==
  
 1. Animated `GIF` showing a demo of the plugin
- 
+
+If you want to e.g. wrap the output in your markup, you can do that with `render_pantheon_google_map_block` filter in your `functions.php` file:
+
+```php
+add_filter('render_pantheon_google_map_block', function($content, $attributes) {
+    return '<div class="row"><div class="column">' . $content . '</div></div>';
+});
+```
+
 == Changelog ==
+
+= 1.3.3 =
+Add filter `render_pantheon_google_map_block`
 
 = 1.3.2 =
 Use `InspectorControls` in `wp.editor` rather than `wp.blocks` as it will be deprecated in Gutenberg `3.1`

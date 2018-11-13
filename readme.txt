@@ -67,6 +67,9 @@ add_filter('render_pantheon_google_map_block', function($content, $attributes) {
 
 == Changelog ==
 
+= 1.3.4 =
+Enqueue block JavaScript in the footer
+
 = 1.3.3 =
 Add filter `render_pantheon_google_map_block`
 

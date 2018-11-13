@@ -29,7 +29,7 @@ if (! defined('ABSPATH')) {
 function blockScripts()
 {
     // Make paths variables so we don't write em twice ;)
-    $hash = 'b9c875fd42be56b52bc3';
+    $hash = '13a7f07206e4d5878d50';
     $blockPath = "assets/js/index.$hash.js";
     $stylePath = "assets/css/style.$hash.css";
 
@@ -39,7 +39,8 @@ function blockScripts()
             'pantheon-google-map-block-js',
             plugins_url($blockPath, __FILE__),
             array( 'wp-i18n', 'wp-element', 'wp-blocks', 'wp-components', 'wp-api' ),
-            filemtime(plugin_dir_path(__FILE__) . $blockPath)
+            filemtime(plugin_dir_path(__FILE__) . $blockPath),
+            true
         );
     }
 

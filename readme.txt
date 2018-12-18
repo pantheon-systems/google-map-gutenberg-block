@@ -67,6 +67,9 @@ add_filter('render_pantheon_google_map_block', function($content, $attributes) {
 
 == Changelog ==
 
+= 1.3.5 =
+Remove wp-blocks dependency from block CSS registration
+
 = 1.3.4 =
 Enqueue block JavaScript in the footer
 

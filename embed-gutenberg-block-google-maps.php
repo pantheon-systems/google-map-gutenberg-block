@@ -4,12 +4,12 @@
  * Description: A plugin enabling a Google Map embed Gutenberg block
  * Author: Pantheon, Andrew Taylor
  * Author URI: https://pantheon.io/
- * Version: 1.3.4
+ * Version: 1.3.5
  * License: GPL2+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: pantheon-google-map-block
  * Requires PHP: 5.6
- * Requires at least: 4.8
+ * Requires at least: 5.0.0
  *
  * @package PantheonGoogleMapBlock
  */
@@ -49,7 +49,7 @@ function blockScripts()
         wp_register_style(
             'pantheon-google-map-block-css',
             plugins_url($stylePath, __FILE__),
-            array( 'wp-blocks' ),
+            array(),
             filemtime(plugin_dir_path(__FILE__) . $stylePath)
         );
     }
@@ -70,7 +70,7 @@ function registerSettings() {
     );
 }
 
-add_action( 'init', __NAMESPACE__ . '\\registerSettings'  );
+add_action( 'init', __NAMESPACE__ . '\registerSettings'  );
 
 /**
  * Render the Googe Map block
@@ -173,10 +173,10 @@ function registerMapBlock() {
                     'default' => '2_1',
                 ),
             ),
-            'render_callback' => __NAMESPACE__ . '\\renderGutenbergMapEmbedblock',
+            'render_callback' => __NAMESPACE__ . '\renderGutenbergMapEmbedblock',
         ) );
     }
 }
 
 
-add_action('init', __NAMESPACE__ . '\\registerMapBlock' );
+add_action('init', __NAMESPACE__ . '\registerMapBlock' );

@@ -4,12 +4,12 @@
  * Description: A plugin enabling a Google Map embed Gutenberg block
  * Author: Pantheon, Andrew Taylor
  * Author URI: https://pantheon.io/
- * Version: 1.3.5
+ * Version: 1.4.0
  * License: GPL2+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: pantheon-google-map-block
  * Requires PHP: 5.6
- * Requires at least: 5.0.0
+ * Requires at least: 5.0
  *
  * @package PantheonGoogleMapBlock
  */
@@ -22,6 +22,19 @@ if (! defined('ABSPATH')) {
 }
 
 /**
+ * Get the defined API Key or key set on the writing settings.
+ *
+ * @return string
+ */
+function getGoogleMapAPIKey()
+{
+    if ( defined( 'GOOGLE_MAPS_API_KEY' ) ) {
+		return GOOGLE_MAPS_API_KEY;
+	}
+	return get_option( 'pantheon_google_map_block_api_key', '' );
+}
+
+/**
  * Register block editor JavaScript and CSS
  * 
  * @return void
@@ -29,7 +42,7 @@ if (! defined('ABSPATH')) {
 function blockScripts()
 {
     // Make paths variables so we don't write em twice ;)
-    $hash = 'e40bd8ddc740c1ae1939';
+    $hash = 'e9c296d7f9a0e777b68f';
     $blockPath = "assets/js/index.$hash.js";
     $stylePath = "assets/css/style.$hash.css";
 
@@ -42,11 +55,17 @@ function blockScripts()
             filemtime(plugin_dir_path(__FILE__) . $blockPath),
             true
         );
+
         wp_add_inline_script(
 			'pantheon-google-map-block-js',
-			sprintf( 
-                'var PantheonGoogleMapsAPIKey = %s;',
-                wp_json_encode( get_google_api_key() )
+			sprintf(
+                'var PantheonGoogleMapsData = %s;',
+                wp_json_encode(
+                    array(
+                        'APIKey' => getGoogleMapAPIKey(),
+                        'userCanManageOptions' => current_user_can( 'manage_options' ),
+                    )
+                )
             ),
 			'before'
 		);
@@ -89,7 +108,7 @@ add_action( 'init', __NAMESPACE__ . '\\registerSettings'  );
 function renderGutenbergMapEmbedblock( $attributes ) {
     
     // Get the API key
-    $APIkey = get_option('pantheon_google_map_block_api_key');
+    $APIkey = getGoogleMapAPIKey();
 
     // Don't output anything if there is no API key
     if (null === $APIkey || empty( $APIkey )) {

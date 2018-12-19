@@ -3,10 +3,10 @@ Contributors: andrew.taylor
 Tags: map, gutenberg, google, embed, block
 Author URI: https://pantheon.io/
 Plugin URI: https://github.com/pantheon-systems/google-map-gutenberg-block
-Requires at least: 4.8
+Requires at least: 5.0
 Tested up to: 5.0.2
 Requires PHP: 5.6
-Stable tag: 1.3.4
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  

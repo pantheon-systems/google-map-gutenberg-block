@@ -4,9 +4,9 @@ Tags: map, gutenberg, google, embed, block
 Author URI: https://pantheon.io/
 Plugin URI: https://github.com/pantheon-systems/google-map-gutenberg-block
 Requires at least: 4.8
-Tested up to: 4.9.6
+Tested up to: 5.0.0
 Requires PHP: 5.6
-Stable tag: 1.3.2
+Stable tag: 1.3.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
@@ -56,8 +56,25 @@ Once you have saved an API key into the plugin settings simply enter a location,
 == Screenshots ==
  
 1. Animated `GIF` showing a demo of the plugin
- 
+
+If you want to e.g. wrap the output in your markup, you can do that with `render_pantheon_google_map_block` filter in your `functions.php` file:
+
+```php
+add_filter('render_pantheon_google_map_block', function($content, $attributes) {
+    return '<div class="row"><div class="column">' . $content . '</div></div>';
+});
+```
+
 == Changelog ==
+
+= 1.3.5 =
+Remove wp-blocks dependency from block CSS registration
+
+= 1.3.4 =
+Enqueue block JavaScript in the footer
+
+= 1.3.3 =
+Add filter `render_pantheon_google_map_block`
 
 = 1.3.2 =
 Use `InspectorControls` in `wp.editor` rather than `wp.blocks` as it will be deprecated in Gutenberg `3.1`

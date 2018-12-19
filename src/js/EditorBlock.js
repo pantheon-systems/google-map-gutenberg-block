@@ -25,7 +25,6 @@ export default class EditorBlock extends Component {
 	}
 
 	render() {
-		console.log( this.state, this.state.apiKey === '' )
 		const { attributes, className, isSelected, setAttributes } = this.props;
 		const { location, mapType, zoom, interactive, maxWidth, maxHeight, aspectRatio } = attributes;
 		const editorPadding = '0 1em';

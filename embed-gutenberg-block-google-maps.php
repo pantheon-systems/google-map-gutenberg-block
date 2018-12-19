@@ -80,7 +80,7 @@ function admin_settings() {
 	add_settings_field( 'pantheon_google_map_block_api_key', __( 'API Key' ), function () {
 		printf( '<input type="text" name="%s" class="widefat regular-text" value="%s" %s />',
 			'pantheon_google_map_block_api_key',
-			get_google_api_key(),
+			esc_attr( get_google_api_key() ),
 			defined( 'GOOGLE_MAPS_API_KEY' ) ? 'readonly' : ''
 		);
 	}, 'writing', __NAMESPACE__ );

@@ -38,10 +38,18 @@ function blockScripts()
         wp_register_script(
             'pantheon-google-map-block-js',
             plugins_url($blockPath, __FILE__),
-            array( 'wp-i18n', 'wp-element', 'wp-blocks', 'wp-components', 'wp-api' ),
+            array( 'wp-i18n', 'wp-element', 'wp-blocks', 'wp-components', 'wp-api', 'wp-editor' ),
             filemtime(plugin_dir_path(__FILE__) . $blockPath),
             true
         );
+        wp_add_inline_script(
+			'pantheon-google-map-block-js',
+			sprintf( 
+                'var PantheonGoogleMapsAPIKey = %s;',
+                wp_json_encode( get_google_api_key() )
+            ),
+			'before'
+		);
     }
 
     // Register frontend and editor block styles
@@ -70,7 +78,7 @@ function registerSettings() {
     );
 }
 
-add_action( 'init', __NAMESPACE__ . '\registerSettings'  );
+add_action( 'init', __NAMESPACE__ . '\\registerSettings'  );
 
 /**
  * Render the Googe Map block
@@ -173,10 +181,10 @@ function registerMapBlock() {
                     'default' => '2_1',
                 ),
             ),
-            'render_callback' => __NAMESPACE__ . '\renderGutenbergMapEmbedblock',
+            'render_callback' => __NAMESPACE__ . '\\renderGutenbergMapEmbedblock',
         ) );
     }
 }
 
 
-add_action('init', __NAMESPACE__ . '\registerMapBlock' );
+add_action('init', __NAMESPACE__ . '\\registerMapBlock' );

@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function block_scripts() {
 	// Make paths variables so we don't write em twice ;)
-	$hash       = '.a6d07451a47e4a4927df';
+	$hash       = '.ee0225b4194b5141d81d';
 	$block_path = "assets/js/index$hash.js";
 	$style_path = "assets/css/style$hash.css";
 
@@ -37,8 +37,13 @@ function block_scripts() {
 		wp_register_script(
 			'pantheon-google-map-block-js',
 			plugins_url( $block_path, __FILE__ ),
-			array( 'wp-i18n', 'wp-element', 'wp-blocks', 'wp-components', 'wp-api' ),
+			array( 'wp-i18n', 'wp-element', 'wp-blocks', 'wp-components', 'wp-editor' ),
 			filemtime( plugin_dir_path( __FILE__ ) . $block_path )
+		);
+		wp_add_inline_script(
+			'pantheon-google-map-block-js',
+			sprintf( 'var PantheonGoogleMapsAPIKey = %s;', wp_json_encode( get_google_api_key() ) ),
+			'before'
 		);
 	}
 
@@ -56,7 +61,7 @@ function block_scripts() {
 
 function register_settings() {
 	register_setting(
-		'pantheon_google_map_block_api_key',
+		'writing',
 		'pantheon_google_map_block_api_key',
 		array(
 			'type'              => 'string',
@@ -70,6 +75,32 @@ function register_settings() {
 
 add_action( 'init', __NAMESPACE__ . '\\register_settings' );
 
+function admin_settings() {
+	add_settings_section( __NAMESPACE__, __( 'Maps Block Settings' ), '__return_false', 'writing' );
+	add_settings_field( 'pantheon_google_map_block_api_key', __( 'API Key' ), function () {
+		printf( '<input type="text" name="%s" class="widefat regular-text" value="%s" %s />',
+			'pantheon_google_map_block_api_key',
+			esc_attr( get_google_api_key() ),
+			defined( 'GOOGLE_MAPS_API_KEY' ) ? 'readonly' : ''
+		);
+	}, 'writing', __NAMESPACE__ );
+}
+
+add_action( 'admin_init', __NAMESPACE__ . '\\admin_settings' );
+
+/**
+ * Get the defined API Key or key set on the writing settings.
+ *
+ * @return string
+ */
+function get_google_api_key() {
+	if ( defined( 'GOOGLE_MAPS_API_KEY' ) ) {
+		return GOOGLE_MAPS_API_KEY;
+	}
+
+	return get_option( 'pantheon_google_map_block_api_key', '' );
+}
+
 /**
  * Render the Google Map block.
  *
@@ -79,7 +110,7 @@ add_action( 'init', __NAMESPACE__ . '\\register_settings' );
 function render_gutenberg_map_embed_block( $attributes ) {
 
 	// Get the API key.
-	$api_key = get_option( 'pantheon_google_map_block_api_key' );
+	$api_key = get_google_api_key();
 
 	// Don't output anything if there is no API key.
 	if ( null === $api_key || empty( $api_key ) ) {

@@ -1,3 +1,4 @@
+/* global PantheonGoogleMapsAPIKey, wp */
 /**
  * Import internal dependencies.
  */
@@ -10,57 +11,17 @@ import classnames from 'classnames';
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.editor;
-const { Button, TextControl, ToggleControl, RangeControl, SelectControl } = wp.components;
+const { TextControl, ToggleControl, RangeControl, SelectControl } = wp.components;
 const { Component } = wp.element;
-
-let settings;
-wp.api.loadPromise.then( () => {
-	settings = new wp.api.models.Settings();
-} );
 
 export default class EditorBlock extends Component {
 	constructor() {
 		super( ...arguments );
 
-		this.saveApiKey = this.saveApiKey.bind( this );
-
 		this.state = {
-			apiKey: '',
-			isSavedKey: false,
+			apiKey: PantheonGoogleMapsAPIKey,
 			isLoading: true,
-			isSaving: false,
-			keySaved: false,
 		};
-
-		settings.on( 'change:pantheon_google_map_block_api_key', model => {
-			const apiKey = model.get( 'pantheon_google_map_block_api_key' );
-			this.setState( {
-				apiKey: settings.get( 'pantheon_google_map_block_api_key' ),
-				isSavedKey: ( apiKey === '' ) ? false : true,
-			} );
-		} );
-
-		settings.fetch().then( response => {
-			this.setState( { apiKey: response.pantheon_google_map_block_api_key } );
-			if ( this.state.apiKey && this.state.apiKey !== '' ) {
-				this.setState( { isSavedKey: true } );
-			}
-			this.setState( { isLoading: false } );
-		} );
-	}
-
-	saveApiKey() {
-		this.setState( { isSaving: true } );
-		const model = new wp.api.models.Settings( { pantheon_google_map_block_api_key: this.state.apiKey } );
-		model.save().then( response => {
-			this.setState( {
-				isSavedKey: true,
-				isLoading: false,
-				isSaving: false,
-				keySaved: true,
-			} );
-			settings.fetch();
-		} );
 	}
 
 	render() {
@@ -70,7 +31,10 @@ export default class EditorBlock extends Component {
 		const classes = classnames(
 			className,
 			`ratio${ aspectRatio }`,
-			{ 'interactive': interactive }
+			{
+				'interactive': interactive,
+				'has-api-key': this.state.apiKey,
+			}
 		);
 
 		const linkOptions = [
@@ -107,32 +71,17 @@ export default class EditorBlock extends Component {
 			},
 		];
 
-		if ( this.state.isLoading  ) {
-			return (
-				<div className={ `${ classes } notice notice-warning` } style={ { padding: editorPadding } }>
-					<p style={ { textAlign: 'center' } }>
-						{ __( 'Loading map...' ) }
-					</p>
-				</div>
-			)
-		}
-
 		const keyInput = (
 			<div>
 				<p style={ { textAlign: 'center' } }>
-					{ __( 'A Google Maps API key is required, please enter one below.' ) }<br />
+					{ __( 'A Google Maps API key is required, please enter one on the writing settings page. You may need an administrator to do this.' ) }
+					<br />
+					<a href="options-writing.php">
+						{ __( 'Enter Google Maps API Key' ) }
+					</a>
+					<br />
 					{ __( 'Note: changing the API key effects all Google Map Embed blocks.' ) }
 				</p>
-				<TextControl
-					key="api-input"
-					value={ this.state.apiKey }
-					onChange={ value => this.setState( { apiKey: value } ) }
-					style={ {
-						textAlign: 'center',
-						border: 'solid 1px rgba(100,100,100,0.25)',
-					} }
-					placeholder={ __( 'API Key' ) }
-				/>
 				<p style={ {
 					textAlign: 'center',
 					paddingBottom: '1em',
@@ -140,23 +89,15 @@ export default class EditorBlock extends Component {
 					{ __( 'Need an API key? Get one' ) }&nbsp;
 					<a href="https://console.developers.google.com/flows/enableapi?apiid=maps_backend,static_maps_backend,maps_embed_backend&keyType=CLIENT_SIDE&reusekey=true">
 						{ __( 'here.' ) }
-					</a><br /><br />
-					<Button
-						isPrimary
-						onClick={ this.saveApiKey }
-						isBusy={ this.state.isSaving }
-						disabled={ this.state.apiKey === '' }
-					>
-						{ __( 'Save API key' ) }
-					</Button>
+					</a>
 				</p>
 			</div>
 		);
 
-		if ( ! this.state.isSavedKey  ) {
+		if ( ! this.state.apiKey ) {
 			return (
 				<div className={ `${ classes } error` } style={ { padding: editorPadding } }>
-					{keyInput}
+					{ keyInput }
 				</div>
 			)
 		}
@@ -212,7 +153,6 @@ export default class EditorBlock extends Component {
 							/>
 						</div>
 					) : null}
-					{ keyInput }
 				</InspectorControls>
 			),
 			( <TextControl
@@ -233,7 +173,7 @@ export default class EditorBlock extends Component {
 					</p>
 				</div>
 			) : (
-				( this.state.apiKey === '' && this.state.keySaved === false ) ?
+				( this.state.apiKey === '' ) ?
 					keyInput
 					: ( <div className={ classes }>
 						<div className="map">

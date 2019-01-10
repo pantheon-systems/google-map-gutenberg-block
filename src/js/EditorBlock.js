@@ -101,74 +101,43 @@ export default class EditorBlock extends Component {
             )
         }
 
-        const userAPIKeyMessage = this.state.isSavedKey ? (
+        let apiKeyMessage = ''
+
+        if( this.state.isSavedKey ) {
+            apiKeyMessage = PantheonGoogleMapsData.userCanManageOptions ? '' : __( 'Only administrators can change the Google Maps API key.');
+        } else { 
+            apiKeyMessage = PantheonGoogleMapsData.userCanManageOptions ? __( 'A valid Google Maps API key is required to use the map block, please enter one below.') : __( 'A valid Google Maps API key is required to use the map block, please ask an administrator to enter one.');
+        }
+
+        const keyInput = (
             <div>
                 <p style={{textAlign: 'center'}}>
-                    {__( 'Only administrators can change the Google Maps API key.')  }<br />
-                    {__( 'Note: changing the API key effects all Google Map Embed blocks.')  }
+                    {apiKeyMessage}<br />
+                    { ( this.state.isSavedKey ) ? __( 'Note: changing the API key effects all Google Map Embed blocks.') : null }
                 </p>
                 <TextControl
                     key="api-input"
                     value={ this.state.apiKey }
                     onChange={ value => this.setState({ apiKey: value }) }
                     style={{textAlign: 'center', border: 'solid 1px rgba(100,100,100,0.25)'}}
-                    readOnly={true}
+                    readOnly={! PantheonGoogleMapsData.userCanManageOptions}
                     placeholder={ __('API Key') }
                 />
                 <p style={{textAlign: 'center', paddingBottom: '1em'}}>
-                <a href={googleAPIkeyLink}>
+                    <a href={googleAPIkeyLink}>
                         {__('An API key can be obtained here.')}
                     </a><br /><br />
                     <Button 
                         isPrimary 
                         onClick={ this.saveApiKey }
                         isBusy={ this.state.isSaving }
-                        disabled={ true }
+                        disabled={ ! PantheonGoogleMapsData.userCanManageOptions || this.state.apiKey === '' }
                     >
                         {__('Save API key')}
                     </Button>
-                </p>
-            </div>
-        ) : (
-            <div>
-                <p style={{textAlign: 'center'}}>
-                    {__( 'A Google Maps API key is required to use the map block, please ask an administrator to enter one.')  }&nbsp;
-                    <a href={googleAPIkeyLink}>
-                        {__('An API key can be obtained here.')}
-                    </a>
                 </p>
             </div>
         );
-
-        const keyInput = PantheonGoogleMapsData.userCanManageOptions ? (
-            <div>
-                <p style={{textAlign: 'center'}}>
-                    {__( 'A Google Maps API key is required, please enter one below.')  }<br />
-                    {__( 'Note: changing the API key effects all Google Map Embed blocks.')  }
-                </p>
-                <TextControl
-                    key="api-input"
-                    value={ this.state.apiKey }
-                    onChange={ value => this.setState({ apiKey: value }) }
-                    style={{textAlign: 'center', border: 'solid 1px rgba(100,100,100,0.25)'}}
-                    placeholder={ __('API Key') }
-                />
-                <p style={{textAlign: 'center', paddingBottom: '1em'}}>
-                    {__('Need an API key? Get one')}&nbsp;
-                    <a href={googleAPIkeyLink}>
-                        {__('An API key can be obtained here.')}
-                    </a><br /><br />
-                    <Button 
-                        isPrimary 
-                        onClick={ this.saveApiKey }
-                        isBusy={ this.state.isSaving }
-                        disabled={ this.state.apiKey === '' }
-                    >
-                        {__('Save API key')}
-                    </Button>
-                </p>
-            </div>
-        ) : userAPIKeyMessage;
 
         if ( ! this.state.isSavedKey  ) {
             return (

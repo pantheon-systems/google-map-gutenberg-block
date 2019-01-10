@@ -97,7 +97,7 @@ function registerSettings() {
     );
 }
 
-add_action( 'init', __NAMESPACE__ . '\\registerSettings'  );
+add_action( 'init', __NAMESPACE__ . '\registerSettings'  );
 
 /**
  * Render the Googe Map block
@@ -200,10 +200,10 @@ function registerMapBlock() {
                     'default' => '2_1',
                 ),
             ),
-            'render_callback' => __NAMESPACE__ . '\\renderGutenbergMapEmbedblock',
+            'render_callback' => __NAMESPACE__ . '\renderGutenbergMapEmbedblock',
         ) );
     }
 }
 
 
-add_action('init', __NAMESPACE__ . '\\registerMapBlock' );
+add_action('init', __NAMESPACE__ . '\registerMapBlock' );

@@ -1,4 +1,4 @@
 node_modules
 sync-to-svn-dir.sh
-assets/css/style.css
-assets/js/index.js
+assets/css/
+assets/js/

@@ -2,8 +2,8 @@
  * Import internal dependencies
  */
 import '../css/style.css';
-import blockIcons from './icons.js';
 import getMapHTML from './getMapHTML.js';
+import classnames from 'classnames';
 
 /**
  * Get WordPress libraries from the wp global
@@ -18,6 +18,8 @@ wp.api.loadPromise.then( () => {
 	settings = new wp.api.models.Settings();
 });
 
+const googleAPIkeyLink = 'https://console.developers.google.com/flows/enableapi?apiid=maps_backend,static_maps_backend,maps_embed_backend&keyType=CLIENT_SIDE&reusekey=true';
+
 export default class EditorBlock extends Component {
     constructor() {
         super( ...arguments );
@@ -25,9 +27,9 @@ export default class EditorBlock extends Component {
         this.saveApiKey = this.saveApiKey.bind( this );
 
         this.state = {
-            apiKey: '',
-            isSavedKey: false,
-            isLoading: true,
+            apiKey: PantheonGoogleMapsData.APIKey,
+            isSavedKey: PantheonGoogleMapsData.APIKey !== '',
+            isLoading: PantheonGoogleMapsData.userCanManageOptions,
             isSaving: false,
             keySaved: false,
         };
@@ -37,13 +39,21 @@ export default class EditorBlock extends Component {
             this.setState({ apiKey: settings.get( 'pantheon_google_map_block_api_key' ), isSavedKey: (apiKey === '' ) ? false : true  });
         });
 
-        settings.fetch().then( response => {
-            this.setState({ apiKey: response.pantheon_google_map_block_api_key });
+        if( PantheonGoogleMapsData.userCanManageOptions ){
+            settings.fetch().then( response => {
+                this.setState({ apiKey: response.pantheon_google_map_block_api_key });
+                if ( this.state.apiKey && this.state.apiKey !== '' ) {
+                    this.setState({ isSavedKey: true });
+                }
+                this.setState({ isLoading: false });
+            });
+        } else {
+            this.setState({ apiKey: PantheonGoogleMapsData.APIKey });
             if ( this.state.apiKey && this.state.apiKey !== '' ) {
                 this.setState({ isSavedKey: true });
             }
             this.setState({ isLoading: false });
-        });
+        }
     }
 
     saveApiKey() {
@@ -59,7 +69,14 @@ export default class EditorBlock extends Component {
         const { attributes, className, isSelected, setAttributes } = this.props;
         const { location, mapType, zoom, interactive, maxWidth, maxHeight, aspectRatio } = attributes;
         const editorPadding = '0 1em';
-        const classNames = ( ! interactive ) ? `${className} ratio${aspectRatio}` : `${className}  ratio${aspectRatio} interactive`;
+        const classNames = classnames(
+			className,
+			`ratio${ aspectRatio }`,
+			{
+				'interactive': interactive,
+				'has-api-key': this.state.apiKey,
+			}
+		);
 
         const linkOptions = [
             {value: 'roadmap', label: __( 'roadmap' ) },
@@ -84,29 +101,37 @@ export default class EditorBlock extends Component {
             )
         }
 
+        let apiKeyMessage = ''
+
+        if( this.state.isSavedKey ) {
+            apiKeyMessage = PantheonGoogleMapsData.userCanManageOptions ? '' : __( 'Only administrators can change the Google Maps API key.');
+        } else { 
+            apiKeyMessage = PantheonGoogleMapsData.userCanManageOptions ? __( 'A valid Google Maps API key is required to use the map block, please enter one below.') : __( 'A valid Google Maps API key is required to use the map block, please ask an administrator to enter one.');
+        }
+
         const keyInput = (
             <div>
                 <p style={{textAlign: 'center'}}>
-                    {__( 'A Google Maps API key is required, please enter one below.')  }<br />
-                    {__( 'Note: changing the API key effects all Google Map Embed blocks.')  }
+                    {apiKeyMessage}<br />
+                    { ( this.state.isSavedKey ) ? __( 'Note: changing the API key effects all Google Map Embed blocks.') : null }
                 </p>
                 <TextControl
                     key="api-input"
                     value={ this.state.apiKey }
                     onChange={ value => this.setState({ apiKey: value }) }
                     style={{textAlign: 'center', border: 'solid 1px rgba(100,100,100,0.25)'}}
+                    readOnly={! PantheonGoogleMapsData.userCanManageOptions}
                     placeholder={ __('API Key') }
                 />
                 <p style={{textAlign: 'center', paddingBottom: '1em'}}>
-                    {__('Need an API key? Get one')}&nbsp;
-                    <a href="https://console.developers.google.com/flows/enableapi?apiid=maps_backend,static_maps_backend,maps_embed_backend&keyType=CLIENT_SIDE&reusekey=true">
-                        {__('here.')}
+                    <a href={googleAPIkeyLink}>
+                        {__('An API key can be obtained here.')}
                     </a><br /><br />
                     <Button 
                         isPrimary 
                         onClick={ this.saveApiKey }
                         isBusy={ this.state.isSaving }
-                        disabled={ this.state.apiKey === '' }
+                        disabled={ ! PantheonGoogleMapsData.userCanManageOptions || this.state.apiKey === '' }
                     >
                         {__('Save API key')}
                     </Button>

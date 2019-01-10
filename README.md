@@ -48,6 +48,15 @@ add_filter('render_pantheon_google_map_block', function($content, $attributes) {
 
 ## Changelog
 
+### `1.5.0`
+Allow non-admins to use the map block
+
+The settings API endpoint requires the `manage_options` capability. This is problematic because only administrators have that permission by default so any users with a lesser role cannot use the map block.
+
+The saved API key and a boolean of whether the current user has the `manage_options` capability are now passed to the block editor JS. Those values are used to determine if an API key is present. If it is not only users who have the `manage_options` capability are shown an option to update the API key. Users without that capability are directed to ask an administrator to save the API key.
+
+Once an API key is saved the block works as expected for users without the `manage_options` capability as the API key is no longer fetched from the REST API for those users.
+
 ### `1.3.5`
 Remove `wp-blocks` dependency from block CSS registration
 

@@ -18,6 +18,8 @@ wp.api.loadPromise.then( () => {
 	settings = new wp.api.models.Settings();
 });
 
+const googleAPIkeyLink = 'https://console.developers.google.com/flows/enableapi?apiid=maps_backend,static_maps_backend,maps_embed_backend&keyType=CLIENT_SIDE&reusekey=true';
+
 export default class EditorBlock extends Component {
     constructor() {
         super( ...arguments );
@@ -114,9 +116,8 @@ export default class EditorBlock extends Component {
                     placeholder={ __('API Key') }
                 />
                 <p style={{textAlign: 'center', paddingBottom: '1em'}}>
-                    {__('Need an API key? Get one')}&nbsp;
-                    <a href="https://console.developers.google.com/flows/enableapi?apiid=maps_backend,static_maps_backend,maps_embed_backend&keyType=CLIENT_SIDE&reusekey=true">
-                        {__('here.')}
+                <a href={googleAPIkeyLink}>
+                        {__('An API key can be obtained here.')}
                     </a><br /><br />
                     <Button 
                         isPrimary 
@@ -131,9 +132,9 @@ export default class EditorBlock extends Component {
         ) : (
             <div>
                 <p style={{textAlign: 'center'}}>
-                    {__( 'A Google Maps API key is required to use the map block, please ask an administrator to enter one. An API key can be obtained')  }&nbsp;
-                    <a href="https://console.developers.google.com/flows/enableapi?apiid=maps_backend,static_maps_backend,maps_embed_backend&keyType=CLIENT_SIDE&reusekey=true">
-                        {__('here.')}
+                    {__( 'A Google Maps API key is required to use the map block, please ask an administrator to enter one.')  }&nbsp;
+                    <a href={googleAPIkeyLink}>
+                        {__('An API key can be obtained here.')}
                     </a>
                 </p>
             </div>
@@ -154,8 +155,8 @@ export default class EditorBlock extends Component {
                 />
                 <p style={{textAlign: 'center', paddingBottom: '1em'}}>
                     {__('Need an API key? Get one')}&nbsp;
-                    <a href="https://console.developers.google.com/flows/enableapi?apiid=maps_backend,static_maps_backend,maps_embed_backend&keyType=CLIENT_SIDE&reusekey=true">
-                        {__('here.')}
+                    <a href={googleAPIkeyLink}>
+                        {__('An API key can be obtained here.')}
                     </a><br /><br />
                     <Button 
                         isPrimary 

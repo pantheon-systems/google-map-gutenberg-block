@@ -16,7 +16,7 @@ This plugin provides a Google Maps embed block for the Gutenberg editor.
  
 This plugin provides a Google Maps embed block for the [Gutenberg WordPress editor](https://github.com/WordPress/gutenberg).
 
-This plugin **requires** either [the Gutenberg plugin](https://wordpress.org/plugins/gutenberg/) version `3.0.1` or greater or WordPress `5.0` or greater.
+This plugin **requires** WordPress `5.0` or greater.
  
 == Installation ==
  

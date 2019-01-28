@@ -48,6 +48,12 @@ add_filter('render_pantheon_google_map_block', function($content, $attributes) {
 
 ## Changelog
 
+### `1.5.1`
+Aspect ratio bug fixes to address [this WordPress.org issue](https://circleci.com/docs/api/#trigger-a-new-job).
+
+- Fix the `1:1` aspect ratio incorrectly displaying as `2:1`
+- Move `16:9` ahead of `4:3` in the aspect ratio selection list so that the aspect ratios are in order of width
+
 ### `1.5.0`
 Allow non-admins to use the map block
 

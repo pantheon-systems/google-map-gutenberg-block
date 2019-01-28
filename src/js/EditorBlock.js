@@ -86,8 +86,8 @@ export default class EditorBlock extends Component {
         const aspectRatioOptions = [
             {value: '2_1', label: __( '2:1' ) },
             {value: '1_1', label: __( '1:1' ) },
-            {value: '4_3', label: __( '4:3' ) },
             {value: '16_9', label: __( '16:9' ) },
+            {value: '4_3', label: __( '4:3' ) },
             {value: '1_2', label: __( '1:2' ) },
         ];
 

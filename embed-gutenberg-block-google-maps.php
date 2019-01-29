@@ -42,7 +42,7 @@ function getGoogleMapAPIKey()
 function blockScripts()
 {
     // Make paths variables so we don't write em twice ;)
-    $hash = 'aef3c8c366ce19f8c0b4';
+    $hash = '621fb7cbfce334e2d05e';
     $blockPath = "assets/js/index.$hash.js";
     $stylePath = "assets/css/style.$hash.css";
 

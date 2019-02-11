@@ -5,7 +5,7 @@
  * Author: Pantheon, Andrew Taylor
  * Author URI: https://pantheon.io/
  * Version: 1.5.1
- * License: GPL2
+ * License: MIT
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: pantheon-google-map-block
  * Requires PHP: 5.6

@@ -125,18 +125,21 @@ function renderGutenbergMapEmbedblock( $attributes ) {
 
     // Set the API url based to embed or static maps based on the interactive setting
     $apiURL = ( $interactive ) ? "https://www.google.com/maps/embed/v1/place?key=${APIkey}&q=${location}&zoom=${zoom}&maptype=${mapType}" : "https://maps.googleapis.com/maps/api/staticmap?center=${location}&zoom=${zoom}&size=${maxWidth}x${maxHeight}&maptype=${mapType}&key=${APIkey}";
-    
-    // Check status code of apiURL
-    $ch = curl_init($apiURL);
-    curl_setopt($ch, CURLOPT_HEADER, true);
-    curl_setopt($ch, CURLOPT_NOBODY, true);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-    curl_setopt($ch, CURLOPT_TIMEOUT,10);
-    $output = curl_exec($ch);
-    $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
 
-    // Don't output anything if the response from Google Maps isn't a 200
+    // Look for a cached response code for the map URL.
+    $httpcode = get_transient( 'pantheon_google_map_block_url_response_code' );
+
+    // If the response code is not found in the cache
+    // Or the current response code is not a 200
+    if( false === $httpcode || $httpcode !== 200 ) {
+        // Get a new response code for the map URL
+        $response = wp_remote_head( $apiURL );
+        $httpcode = wp_remote_retrieve_response_code( $response );
+        // Set a transient to cache the response code.
+        set_transient( 'pantheon_google_map_block_url_response_code', $httpcode, DAY_IN_SECONDS );
+    }
+
+    // Don't output anything if the response from Google Maps isn't a 200.
     if( $httpcode !== 200 ){
         return;
     }
@@ -146,6 +149,7 @@ function renderGutenbergMapEmbedblock( $attributes ) {
     
     // Create the output
     $output = "<div class='$classNames'><div class='map'>";
+
     // If the map is interactive show the iframe
     if( $interactive ){
         $output .= "<iframe width='100%' height='100%' frameborder='0' style='border:0' src='$apiURL' allowfullscreen></iframe>";
@@ -165,9 +169,9 @@ function renderGutenbergMapEmbedblock( $attributes ) {
  * @return void
  */
 function registerMapBlock() {
-    if( \function_exists('register_block_type') ){
+    if( function_exists('register_block_type') ){
         blockScripts();
-        \register_block_type( 'pantheon/google-map', array(
+        register_block_type( 'pantheon/google-map', array(
             'editor_script' => 'pantheon-google-map-block-js',
             'style' => 'pantheon-google-map-block-css',
             'attributes' => array (

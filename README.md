@@ -48,6 +48,11 @@ add_filter('render_pantheon_google_map_block', function($content, $attributes) {
 
 ## Changelog
 
+### `1.5.2`
+Use the [WordPress HTTP API](https://developer.wordpress.org/plugins/http-api/) instead of `curl` to check the response code of the map URL. Additionally, cache the map URL response code in a transient to avoid making a request on each page load.
+
+Hide the API key input section in the map block settings when the Google Map API key is defined with the `GOOGLE_MAPS_API_KEY` constant. Additionally, add the `api-key-input-container` class to the `div` surrounding the API key input field in the map block settings for easier styling.
+
 ### `1.5.1`
 Aspect ratio bug fixes to address [this WordPress.org issue](https://circleci.com/docs/api/#trigger-a-new-job).
 

@@ -11,7 +11,7 @@ import classnames from 'classnames';
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.editor;
 const { Button, TextControl, ToggleControl, RangeControl, SelectControl } = wp.components;
-const { Component } = wp.element;
+const { Component, Fragment } = wp.element;
 
 let settings;
 wp.api.loadPromise.then( () => {
@@ -30,6 +30,8 @@ export default class EditorBlock extends Component {
             apiKey: PantheonGoogleMapsData.APIKey,
             isSavedKey: PantheonGoogleMapsData.APIKey !== '',
             isLoading: PantheonGoogleMapsData.userCanManageOptions,
+            APIKeyConstantDefined: !! PantheonGoogleMapsData.APIKeyConstantDefined,
+            userCanManageOptions: !! PantheonGoogleMapsData.userCanManageOptions,
             isSaving: false,
             keySaved: false,
         };
@@ -39,7 +41,7 @@ export default class EditorBlock extends Component {
             this.setState({ apiKey: settings.get( 'pantheon_google_map_block_api_key' ), isSavedKey: (apiKey === '' ) ? false : true  });
         });
 
-        if( PantheonGoogleMapsData.userCanManageOptions ){
+        if( this.state.userCanManageOptions ){
             settings.fetch().then( response => {
                 this.setState({ apiKey: response.pantheon_google_map_block_api_key });
                 if ( this.state.apiKey && this.state.apiKey !== '' ) {
@@ -103,39 +105,51 @@ export default class EditorBlock extends Component {
 
         let apiKeyMessage = ''
 
-        if( this.state.isSavedKey ) {
-            apiKeyMessage = PantheonGoogleMapsData.userCanManageOptions ? '' : __( 'Only administrators can change the Google Maps API key.');
+        if( this.state.APIKeyConstantDefined ) {
+            apiKeyMessage = __( 'The Google Maps API key is defined with the GOOGLE_MAPS_API_KEY constant. To change the API key, update the constant value.');
+        } else if( this.state.isSavedKey ) {
+            apiKeyMessage = this.state.userCanManageOptions ? '' : __( 'Only administrators can change the Google Maps API key.');
         } else { 
-            apiKeyMessage = PantheonGoogleMapsData.userCanManageOptions ? __( 'A valid Google Maps API key is required to use the map block, please enter one below.') : __( 'A valid Google Maps API key is required to use the map block, please ask an administrator to enter one.');
+            apiKeyMessage = this.state.userCanManageOptions ? __( 'A valid Google Maps API key is required to use the map block, please enter one below.') : __( 'A valid Google Maps API key is required to use the map block, please ask an administrator to enter one.');
         }
 
         const keyInput = (
-            <div>
-                <p style={{textAlign: 'center'}}>
-                    {apiKeyMessage}<br />
-                    { ( this.state.isSavedKey ) ? __( 'Note: changing the API key effects all Google Map Embed blocks.') : null }
-                </p>
-                <TextControl
-                    key="api-input"
-                    value={ this.state.apiKey }
-                    onChange={ value => this.setState({ apiKey: value }) }
-                    style={{textAlign: 'center', border: 'solid 1px rgba(100,100,100,0.25)'}}
-                    readOnly={! PantheonGoogleMapsData.userCanManageOptions}
-                    placeholder={ __('API Key') }
-                />
-                <p style={{textAlign: 'center', paddingBottom: '1em'}}>
-                    <a href={googleAPIkeyLink}>
-                        {__('An API key can be obtained here.')}
-                    </a><br /><br />
-                    <Button 
-                        isPrimary 
-                        onClick={ this.saveApiKey }
-                        isBusy={ this.state.isSaving }
-                        disabled={ ! PantheonGoogleMapsData.userCanManageOptions || this.state.apiKey === '' }
-                    >
-                        {__('Save API key')}
-                    </Button>
-                </p>
+            <div className="api-key-input-container">
+                {
+                    this.state.APIKeyConstantDefined  ? (
+                        <p style={{textAlign: 'center'}}>
+                            {apiKeyMessage}
+                        </p>
+                    ) : (
+                        <Fragment>
+                            <p style={{textAlign: 'center'}}>
+                                {apiKeyMessage}<br />
+                                { ( this.state.isSavedKey && this.state.userCanManageOptions ) ? __( 'Note: changing the API key effects all Google Map Embed blocks.') : null }
+                            </p>
+                            <TextControl
+                                key="api-input"
+                                value={ this.state.apiKey }
+                                onChange={ value => this.setState({ apiKey: value }) }
+                                style={{textAlign: 'center', border: 'solid 1px rgba(100,100,100,0.25)'}}
+                                readOnly={this.state.APIKeyConstantDefined || ! this.state.userCanManageOptions}
+                                placeholder={ __('API Key') }
+                            />
+                            <p style={{textAlign: 'center', paddingBottom: '1em'}}>
+                                <a href={googleAPIkeyLink}>
+                                    {__('An API key can be obtained here.')}
+                                </a><br /><br />
+                                <Button
+                                    isPrimary
+                                    onClick={ this.saveApiKey }
+                                    isBusy={ this.state.isSaving }
+                                    disabled={ this.state.APIKeyConstantDefined || ! this.state.userCanManageOptions || this.state.apiKey === '' }
+                                >
+                                    {__('Save API key')}
+                                </Button>
+                            </p>
+                        </Fragment>
+                    )
+                }
             </div>
         );
 

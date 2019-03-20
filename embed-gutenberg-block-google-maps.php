@@ -62,6 +62,7 @@ function blockScripts()
                 'var PantheonGoogleMapsData = %s;',
                 wp_json_encode(
                     array(
+                        'APIKeyConstantDefined' => defined( 'GOOGLE_MAPS_API_KEY' ),
                         'APIKey' => getGoogleMapAPIKey(),
                         'userCanManageOptions' => current_user_can( 'manage_options' ),
                     )

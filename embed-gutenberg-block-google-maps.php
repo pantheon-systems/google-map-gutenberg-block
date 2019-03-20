@@ -129,6 +129,11 @@ function renderGutenbergMapEmbedblock( $attributes ) {
     // Look for a cached response code for the map URL.
     $httpcode = get_transient( 'pantheon_google_map_block_url_response_code' );
 
+    // Ensure the status code from cache is an integer.
+    if( false !== $httpcode ) {
+        $httpcode = intval( $httpcode );
+    }
+
     // If the response code is not found in the cache
     // Or the current response code is not a 200
     if( false === $httpcode || $httpcode !== 200 ) {

@@ -4,7 +4,7 @@
  * Description: A plugin enabling a Google Map embed Gutenberg block
  * Author: Pantheon, Andrew Taylor
  * Author URI: https://pantheon.io/
- * Version: 1.5.2
+ * Version: 1.5.3
  * License: MIT
  * License URI: https://opensource.org/licenses/MIT
  * Text Domain: pantheon-google-map-block
@@ -126,29 +126,6 @@ function renderGutenbergMapEmbedblock( $attributes ) {
 
     // Set the API url based to embed or static maps based on the interactive setting
     $apiURL = ( $interactive ) ? "https://www.google.com/maps/embed/v1/place?key=${APIkey}&q=${location}&zoom=${zoom}&maptype=${mapType}" : "https://maps.googleapis.com/maps/api/staticmap?center=${location}&zoom=${zoom}&size=${maxWidth}x${maxHeight}&maptype=${mapType}&key=${APIkey}";
-
-    // Look for a cached response code for the map URL.
-    $httpcode = get_transient( 'pantheon_google_map_block_url_response_code' );
-
-    // Ensure the status code from cache is an integer.
-    if( false !== $httpcode ) {
-        $httpcode = intval( $httpcode );
-    }
-
-    // If the response code is not found in the cache
-    // Or the current response code is not a 200
-    if( false === $httpcode || $httpcode !== 200 ) {
-        // Get a new response code for the map URL
-        $response = wp_remote_head( $apiURL );
-        $httpcode = wp_remote_retrieve_response_code( $response );
-        // Set a transient to cache the response code.
-        set_transient( 'pantheon_google_map_block_url_response_code', $httpcode, DAY_IN_SECONDS );
-    }
-
-    // Don't output anything if the response from Google Maps isn't a 200.
-    if( $httpcode !== 200 ){
-        return;
-    }
 
     // Set the appropriate CSS class names
     $classNames = ( $interactive ) ? "wp-block-pantheon-google-map interactive ratio$aspectRatio" : "wp-block-pantheon-google-map";

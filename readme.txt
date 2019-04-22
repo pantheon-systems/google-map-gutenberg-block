@@ -6,7 +6,7 @@ Plugin URI: https://github.com/pantheon-systems/google-map-gutenberg-block
 Requires at least: 5.0
 Tested up to: 5.1.1
 Requires PHP: 5.6
-Stable tag: 1.5.2
+Stable tag: 1.5.3
 License: MIT
 License URI: https://opensource.org/licenses/MIT
  
@@ -66,6 +66,9 @@ add_filter('render_pantheon_google_map_block', function($content, $attributes) {
 ```
 
 == Changelog ==
+
+= 1.5.3 =
+Remove the server-side check for a valid Google Maps URL as it was failing and preventing the map from rendering in some environments. If an invalid Google Maps API key is provided, an error message from Google Maps will be rendered on the page.
 
 = 1.5.2 =
 Use the [WordPress HTTP API](https://developer.wordpress.org/plugins/http-api/) instead of `curl` to check the response code of the map URL. Additionally, cache the map URL response code in a transient to avoid making a request on each page load.

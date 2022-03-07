@@ -1,6 +1,8 @@
 # Map Embed Gutenberg Block for Google Maps By Pantheon
 This WordPress plugin provides a Google Maps embed block for the [Gutenberg WordPress editor](https://github.com/WordPress/gutenberg).
 
+[![Unofficial](https://img.shields.io/badge/Pantheon-Unofficial-yellow?logo=pantheon&color=FFDC28)](https://pantheon.io/docs/oss-support-levels#unofficial)
+
 This plugin **requires** WordPress `5.0` or greater.
 
 ## Installation
